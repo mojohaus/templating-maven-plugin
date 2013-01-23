@@ -90,19 +90,19 @@ public class AddFilteredSourceMojo extends AbstractMojo
 
 	public void execute() throws MojoExecutionException
 	{
-		System.out.println("source=" + templateSourceDirectory + " target=" + targetGenerated);
+	    getLog().debug("source=" + templateSourceDirectory + " target=" + targetGenerated);
 		// System.out.println("Nombre de filtres = " + getCombinedFiltersList().size());
 
 		// 1 Copy with filtering the given source (default java-templates) to target dir
 		List<Resource> resources = new ArrayList<Resource>();
 		Resource resource = new Resource();
 		resource.setFiltering(true);
-		System.err.println(templateSourceDirectory);
+		getLog().debug(templateSourceDirectory.getAbsolutePath());
 		resource.setDirectory(templateSourceDirectory.getAbsolutePath());
 		resources.add(resource);
 
 		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources,
-			targetGenerated, project, encoding, Collections.emptyList(), Collections.EMPTY_LIST,
+			targetGenerated, project, encoding, Collections.emptyList(), Collections.<String>emptyList(),
 			session);
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
 		// mavenResourcesExecution.setUseDefaultFilterWrappers(true);
@@ -120,7 +120,7 @@ public class AddFilteredSourceMojo extends AbstractMojo
 		this.project.addCompileSourceRoot(targetGenerated.getAbsolutePath());
 		if (getLog().isInfoEnabled())
 		{
-			System.err.println("XXXXXX Source directory: " + targetGenerated + " added.");
+		    getLog().info("XXXXXX Source directory: " + targetGenerated + " added.");
 		}
 
 	}
