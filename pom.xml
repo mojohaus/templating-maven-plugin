@@ -10,7 +10,7 @@
   
   	<artifactId>templating-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>0.1-mipih-tmp</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>add-filtered-source-build-helper-maven-plugin Maven Mojo</name>
 	<url>http://maven.apache.org</url>
 
