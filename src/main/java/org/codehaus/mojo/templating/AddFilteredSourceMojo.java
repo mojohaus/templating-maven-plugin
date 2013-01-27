@@ -49,23 +49,23 @@ public class AddFilteredSourceMojo extends AbstractMojo
 	/**
 	 * Target folder where filtered sources will land.
 	 */
-	@Parameter(defaultValue = "${project.build.directory}/javagenerated")
+	@Parameter(defaultValue = "${project.build.directory}/generated-sources/java-templates")
 	private File targetGenerated;
 
 	/**
 	 * The character encoding scheme to be applied when filtering resources.
 	 */
 	@Parameter(defaultValue = "${project.build.sourceEncoding}")
-	protected String encoding;
+	private String encoding;
 
 	@Parameter(defaultValue = "${session}", required = true, readonly = true)
-	protected MavenSession session;
+	private MavenSession session;
 
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
-	protected MavenProject project;
+	private MavenProject project;
 
 	@Component(hint = "default")
-	protected MavenResourcesFiltering mavenResourcesFiltering;
+	private MavenResourcesFiltering mavenResourcesFiltering;
 
 	public void execute() throws MojoExecutionException
 	{
