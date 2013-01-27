@@ -33,13 +33,22 @@ import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
 /**
+ * This mojo helps adding a filtered source folder in one go. This is typically useful if you want
+ * to use properties coming from the POM inside parts of your source code that requires real
+ * constants, like annotations for example.
  */
 @Mojo(name = "add-filtered-source", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class AddFilteredSourceMojo extends AbstractMojo
 {
+	/**
+	 * Source directory that will be first filtered and then added as a classical source folder.
+	 */
 	@Parameter(defaultValue = "${basedir}/src/main/java-templates")
 	private File templateSourceDirectory;
 
+	/**
+	 * Target folder where filtered sources will land.
+	 */
 	@Parameter(defaultValue = "${project.build.directory}/javagenerated")
 	private File targetGenerated;
 
@@ -52,48 +61,17 @@ public class AddFilteredSourceMojo extends AbstractMojo
 	@Parameter(defaultValue = "${session}", required = true, readonly = true)
 	protected MavenSession session;
 
-	@Parameter
-	protected List<String> filters;
-
 	@Parameter(defaultValue = "${project}", required = true, readonly = true)
 	protected MavenProject project;
-
-	@Parameter(defaultValue = "${project.build.filters}", readonly = true)
-	protected List<String> buildFilters;
 
 	@Component(hint = "default")
 	protected MavenResourcesFiltering mavenResourcesFiltering;
 
-	@Parameter(defaultValue = "true")
-	protected boolean useBuildFilters;
-
-	protected List<String> getCombinedFiltersList()
-	{
-		if (filters == null || filters.isEmpty())
-		{
-			return useBuildFilters ? buildFilters : null;
-		}
-		else
-		{
-			List<String> result = new ArrayList<String>();
-
-			if (useBuildFilters && buildFilters != null && !buildFilters.isEmpty())
-			{
-				result.addAll(buildFilters);
-			}
-
-			result.addAll(filters);
-
-			return result;
-		}
-	}
-
 	public void execute() throws MojoExecutionException
 	{
-	    getLog().debug("source=" + templateSourceDirectory + " target=" + targetGenerated);
-		// System.out.println("Nombre de filtres = " + getCombinedFiltersList().size());
+		getLog().debug("source=" + templateSourceDirectory + " target=" + targetGenerated);
 
-		// 1 Copy with filtering the given source (default java-templates) to target dir
+		// 1 Copy with filtering the given source to target dir
 		List<Resource> resources = new ArrayList<Resource>();
 		Resource resource = new Resource();
 		resource.setFiltering(true);
@@ -102,10 +80,9 @@ public class AddFilteredSourceMojo extends AbstractMojo
 		resources.add(resource);
 
 		MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution(resources,
-			targetGenerated, project, encoding, Collections.emptyList(), Collections.<String>emptyList(),
-			session);
+			targetGenerated, project, encoding, Collections.emptyList(),
+			Collections.<String> emptyList(), session);
 		mavenResourcesExecution.setInjectProjectBuildFilters(false);
-		// mavenResourcesExecution.setUseDefaultFilterWrappers(true);
 
 		try
 		{
@@ -115,13 +92,12 @@ public class AddFilteredSourceMojo extends AbstractMojo
 		{
 			throw new MojoExecutionException(e.getMessage(), e);
 		}
-		// 2 Add that dir to sources
 
+		// 2 Add that dir to sources
 		this.project.addCompileSourceRoot(targetGenerated.getAbsolutePath());
 		if (getLog().isInfoEnabled())
 		{
-		    getLog().info("XXXXXX Source directory: " + targetGenerated + " added.");
+			getLog().info("Source directory: " + targetGenerated + " added.");
 		}
-
 	}
 }
