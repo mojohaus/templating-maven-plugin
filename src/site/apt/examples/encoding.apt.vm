@@ -1,9 +1,9 @@
  ------
  Specifying a character encoding scheme
  ------
- Franz Allan See
+ Baptiste Mathus
  ------
- 2008-09-05
+ 2013-01-27
  ------
 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -40,8 +40,8 @@ Specifying a character encoding scheme
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>templating-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
           ...
