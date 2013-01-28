@@ -38,21 +38,21 @@ import java.util.List;
  * to use properties coming from the POM inside parts of your source code that requires real
  * constants, like annotations for example.
  */
-@Mojo(name = "add-filtered-source", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class AddFilteredSourceMojo
+@Mojo( name = "add-filtered-test-source", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES )
+public class AddFilteredTestSourceMojo
     extends AbstractMojo
 {
     /**
      * Source directory that will be first filtered and then added as a classical source folder.
      */
-    @Parameter( defaultValue = "${basedir}/src/main/java-templates" )
-    private File sourceDirectory;
+    @Parameter( defaultValue = "${basedir}/src/test/java-templates" )
+    private File testSourceDirectory;
 
     /**
      * Target folder where filtered sources will land.
      */
-    @Parameter( defaultValue = "${project.build.directory}/generated-sources/java-templates" )
-    private File targetDirectory;
+    @Parameter( defaultValue = "${project.build.directory}/generated-test-sources/java-templates" )
+    private File testTargetDirectory;
 
     /**
      * The character encoding scheme to be applied when filtering resources.
@@ -86,33 +86,33 @@ public class AddFilteredSourceMojo
      * Controls whether the default delimiters are included in addition to those configured {@link #delimiters}. Does
      * not have any effect if {@link #delimiters} is empty when the defaults will be included anyway.
      */
-    @Parameter(defaultValue = "true")
+    @Parameter( defaultValue = "true" )
     protected boolean useDefaultDelimiters;
 
-    @Parameter(defaultValue = "${session}", required = true, readonly = true)
+    @Parameter( defaultValue = "${session}", required = true, readonly = true )
     private MavenSession session;
 
-    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    @Parameter( defaultValue = "${project}", required = true, readonly = true )
     private MavenProject project;
 
-    @Component(hint = "default")
+    @Component( hint = "default" )
     private MavenResourcesFiltering mavenResourcesFiltering;
 
     public void execute()
         throws MojoExecutionException
     {
-        getLog().debug( "source=" + sourceDirectory + " target=" + targetDirectory );
+        getLog().debug( "source=" + testSourceDirectory + " target=" + testTargetDirectory );
 
         // 1 Copy with filtering the given source to target dir
         List<Resource> resources = new ArrayList<Resource>();
         Resource resource = new Resource();
         resource.setFiltering( true );
-        getLog().debug( sourceDirectory.getAbsolutePath() );
-        resource.setDirectory( sourceDirectory.getAbsolutePath() );
+        getLog().debug( testSourceDirectory.getAbsolutePath() );
+        resource.setDirectory( testSourceDirectory.getAbsolutePath() );
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution( resources, targetDirectory, project, encoding, Collections.emptyList(),
+            new MavenResourcesExecution( resources, testTargetDirectory, project, encoding, Collections.emptyList(),
                                          Collections.<String>emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( false );
         mavenResourcesExecution.setEscapeString( escapeString );
@@ -151,10 +151,10 @@ public class AddFilteredSourceMojo
         }
 
         // 2 Add that dir to sources
-        this.project.addCompileSourceRoot( targetDirectory.getAbsolutePath() );
+        this.project.addTestCompileSourceRoot( testTargetDirectory.getAbsolutePath() );
         if ( getLog().isInfoEnabled() )
         {
-            getLog().info( "Source directory: " + targetDirectory + " added." );
+            getLog().info( "Source directory: " + testTargetDirectory + " added." );
         }
     }
 }
