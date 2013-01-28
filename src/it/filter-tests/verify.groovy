@@ -22,3 +22,4 @@ assert buildLog.text.contains("BUILD SUCCESS")
 
 assert new File(basedir, 'target').exists();
 assert new File(basedir, 'target/generated-sources/java-templates').exists();
+assert new File(basedir, 'target/generated-test-sources/java-templates').exists();

@@ -35,11 +35,11 @@ import java.util.List;
 
 /**
  * This mojo helps adding a filtered source folder in one go. This is typically useful if you want
- * to use properties coming from the POM inside parts of your source code that requires real
+ * to use properties coming from the POM inside parts of your test source code that requires real
  * constants, like annotations for example.
  */
-@Mojo( name = "add-filtered-test-source", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES )
-public class AddFilteredTestSourceMojo
+@Mojo( name = "filter-test-sources", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES )
+public class FilterTestSourcesMojo
     extends AbstractMojo
 {
     /**

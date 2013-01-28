@@ -22,10 +22,9 @@
         <version>@project.version@</version>
         <executions>
           <execution>
-            <phase>generate-sources</phase>
             <goals>
-              <goal>add-filtered-source</goal>
-              <goal>add-filtered-test-source</goal>
+              <goal>filter-sources</goal>
+              <goal>filter-test-sources</goal>
             </goals>
           </execution>
         </executions>

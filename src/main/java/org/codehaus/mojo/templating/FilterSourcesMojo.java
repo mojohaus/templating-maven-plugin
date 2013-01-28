@@ -38,8 +38,8 @@ import java.util.List;
  * to use properties coming from the POM inside parts of your source code that requires real
  * constants, like annotations for example.
  */
-@Mojo(name = "add-filtered-source", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class AddFilteredSourceMojo
+@Mojo(name = "filter-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+public class FilterSourcesMojo
     extends AbstractMojo
 {
     /**

@@ -38,7 +38,7 @@ Usage
 * Copy and filters your source files to the specified target directory
 
 +-----+
-mvn templating:add-filtered-source
+mvn templating:filter-sources
 +-----+
 
  Upon executing this command, your source files inside this directory will be copied and filtered to the target
@@ -47,4 +47,17 @@ mvn templating:add-filtered-source
  directory and the associated resources plugin.
 
  Moreover, this goal is bound by default to the <<<generate-sources>>> phase.
+
+* Copy and filters your test source files to the specified target directory
+
++-----+
+mvn templating:filter-test-sources
++-----+
+
+ Upon executing this command, your source files inside this directory will be copied and filtered to the target
+ directory you specified (or the default one).
+ Note: if you only want to filter resources files (not source code), you should use the standard src/test/resources
+ directory and the associated resources plugin.
+
+ Moreover, this goal is bound by default to the <<<generate-test-sources>>> phase.
 

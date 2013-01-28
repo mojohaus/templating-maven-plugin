@@ -39,12 +39,19 @@ Templating Maven Plugin
 
    Blablabla TODO
 
-   * {{{./add-filtered-source-mojo.html}templating:add-filtered-source}} blabla
+   * {{{./filter-sources-mojo.html}templating:filter-sources}} blabla
     blablablabla blablablabla blablablabla blablablabla blablablabla.
      
     todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
     todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
     todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
+
+   * {{{./filter-test-sources-mojo.html}templating:filter-test-sources}} blabla
+    blablablabla blablablabla blablablabla blablablabla blablablabla.
+
+    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
+    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
+    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
 
 * Usage
 
