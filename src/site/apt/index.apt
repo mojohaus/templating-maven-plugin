@@ -39,19 +39,9 @@ Templating Maven Plugin
 
    Blablabla TODO
 
-   * {{{./filter-sources-mojo.html}templating:filter-sources}} blabla
-    blablablabla blablablabla blablablabla blablablabla blablablabla.
-     
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo 
+   * {{{./filter-sources-mojo.html}templating:filter-sources}} lets you filter your sources in one go.
 
-   * {{{./filter-test-sources-mojo.html}templating:filter-test-sources}} blabla
-    blablablabla blablablabla blablablabla blablablabla blablablabla.
-
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
-    todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo todo
+   * {{{./filter-test-sources-mojo.html}templating:filter-test-sources}} lets you filter your test sources in one go.
 
 * Usage
 
