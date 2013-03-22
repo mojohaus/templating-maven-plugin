@@ -32,12 +32,7 @@ Templating Maven Plugin
  This plugin is useful to filter Java Source Code if you need for example to have things in that code 
  replaced with some <properties> values. 
  
- Currently, it uses the  {{{http://maven.apache.org/shared/maven-filtering/}Maven Filtering}}
- shared component for filtering resources.
-
 * Goals Overview
-
-   Blablabla TODO
 
    * {{{./filter-sources-mojo.html}templating:filter-sources}} lets you filter your sources in one go.
 
@@ -63,9 +58,17 @@ Templating Maven Plugin
 
 * Examples
 
-   The following examples show how to use the Resources Plugin in more advanced
+   The following examples show how to use the Templating Plugin in more advanced
    usecases:
+
+   * {{{./examples/source-filtering.html}How to typically configure the filtering}}
 
    * {{{./examples/encoding.html}Specifying a character encoding scheme}}
 
+* Technical details
+
+   Currently, it uses the  {{{http://maven.apache.org/shared/maven-filtering/}Maven Filtering}}
+   shared component for filtering resources.
+   
    []
+   

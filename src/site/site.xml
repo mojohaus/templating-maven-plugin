@@ -31,6 +31,8 @@ under the License.
       <item name="FAQ" href="faq.html"/>
     </menu>
     <menu name="Examples">
+      <item name="How to filter sources"
+            href="/examples/source-filtering.html"/>
       <item name="Specifying a character encoding scheme"
             href="/examples/encoding.html"/>
     </menu>

@@ -60,4 +60,3 @@ mvn templating:filter-test-sources
  directory and the associated resources plugin.
 
  Moreover, this goal is bound by default to the <<<generate-test-sources>>> phase.
-
