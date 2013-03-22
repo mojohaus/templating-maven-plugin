@@ -2,15 +2,40 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>mojo-sandbox-parent</artifactId>
-    <version>12</version>
-  </parent>
-  
-  	<artifactId>templating-maven-plugin</artifactId>
+	<parent>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>mojo-sandbox-parent</artifactId>
+		<version>12</version>
+	</parent>
+
+	<artifactId>templating-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<version>0.1-SNAPSHOT</version>
+
+	<name>Templating Maven Plugin</name>
+	<inceptionYear>2013</inceptionYear>
+	<description>
+		That project was designed to offer the Maven Right Way® to filter sources.
+		It was created as a follow-up to that thread on users@maven [1].
+	</description>
+	<developers>
+		<developer>
+			<id>baptiste</id>
+			<name>Baptiste Mathus</name>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Stephen Connolly</name>
+			<email>stephen.alan.connolly@gmail.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>0</timezone>
+		</developer>
+	</developers>
 
 	<properties>
 		<mavenVersion>2.2.1</mavenVersion>
@@ -95,57 +120,53 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-      <version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.2</version>
-      </plugin>
-    </plugins>
-  </reporting>
 
-  <profiles>
-    <profile>
-      <id>run-its</id>
-      <activation>
-        <property>
-          <name>skipTests</name>
-          <value>!true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <version>1.8</version>
-            <configuration>
-              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-             <cloneClean>true</cloneClean>
-              <postBuildHookScript>verify</postBuildHookScript>
-              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <settingsFile>src/it/settings.xml</settingsFile>
-              <goals>
-                <goal>templating:add-filtered-source</goal>
-              </goals>
-            </configuration>
-            <executions>
-              <execution>
-                <id>integration-test</id>
-                <goals>
-                  <goal>install</goal>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>3.2</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<profiles>
+		<profile>
+			<id>run-its</id>
+			<activation>
+				<property>
+					<name>skipTests</name>
+					<value>!true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-invoker-plugin</artifactId>
+						<configuration>
+							<cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+							<cloneClean>true</cloneClean>
+							<postBuildHookScript>verify</postBuildHookScript>
+							<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+							<settingsFile>src/it/settings.xml</settingsFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<goals>
+									<goal>install</goal>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
