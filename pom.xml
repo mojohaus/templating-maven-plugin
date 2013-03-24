@@ -4,8 +4,8 @@
 
 	<parent>
 		<groupId>org.codehaus.mojo</groupId>
-		<artifactId>mojo-sandbox-parent</artifactId>
-		<version>12</version>
+		<artifactId>mojo-parent</artifactId>
+		<version>31</version>
 	</parent>
 
 	<artifactId>templating-maven-plugin</artifactId>
@@ -20,7 +20,6 @@
 	</description>
 	<developers>
 		<developer>
-			<id>baptiste</id>
 			<name>Baptiste Mathus</name>
 			<timezone>+1</timezone>
 			<roles>
