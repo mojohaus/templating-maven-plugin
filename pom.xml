@@ -13,11 +13,18 @@
 	<version>0.1-SNAPSHOT</version>
 
 	<name>Templating Maven Plugin</name>
-	<inceptionYear>2013</inceptionYear>
 	<description>
 		That project was designed to offer the Maven Right Way® to filter sources.
 		It was created as a follow-up to that thread on users@maven [1].
 	</description>
+	<inceptionYear>2013</inceptionYear>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<developers>
 		<developer>
 			<name>Baptiste Mathus</name>
@@ -35,7 +42,14 @@
 			<timezone>0</timezone>
 		</developer>
 	</developers>
-
+	<prerequisites>
+		<maven>${mavenVersion}</maven>
+	</prerequisites>
+	<scm>
+		<connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</developerConnection>
+		<url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/templating-maven-plugin</url>
+	</scm>
 	<properties>
 		<mavenVersion>2.2.1</mavenVersion>
 		<mojo.java.target>1.5</mojo.java.target>
