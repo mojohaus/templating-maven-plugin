@@ -14,8 +14,7 @@
 
 	<name>Templating Maven Plugin</name>
 	<description>
-		That project was designed to offer the Maven Right Way® to filter sources.
-		It was created as a follow-up to that thread on users@maven [1].
+		That project was designed to offer the Maven Right Way® :-) to filter sources.
 	</description>
 	<inceptionYear>2013</inceptionYear>
 	<licenses>
