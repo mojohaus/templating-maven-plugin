@@ -32,11 +32,15 @@ Specifying a character encoding scheme
  used for the reading and writing of files.
 
  For example, if we want to specify that the character encoding scheme be <<<UTF-8>>>,
- we would simply have to modify the POM.
+ we would simply have to configure that as in the following example:
 
 +-----+
 <project>
   ...
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -47,9 +51,6 @@ Specifying a character encoding scheme
     </plugins>
     ...
   </build>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
   ...
 </project>
 +-----+
