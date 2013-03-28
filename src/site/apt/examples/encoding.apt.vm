@@ -43,15 +43,13 @@ Specifying a character encoding scheme
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
         <version>${project.version}</version>
-        <configuration>
-          ...
-          <encoding>${project.build.sourceEncoding}</encoding>
-          ...
-        </configuration>
       </plugin>
     </plugins>
     ...
   </build>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   ...
 </project>
 +-----+
