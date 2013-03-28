@@ -50,18 +50,19 @@ Filtering a source folder
           <execution>
             <goals>
               <goal>filter-sources</goal>
-              
-              <!-- 
-                Note the two following parameters are the default one. 
-                These are specified here just as a reminder. 
-                But as the Maven philosophy is strongly about conventions, 
-                it's better to just not specify them.
-              -->
-              <sourceDirectory>${basedir}/src/main/java-templates</sourceDirectory>
-              <targetDirectory>\${project.build.directory}/generated-sources/java-templates</targetDirectory>
             </goals>
           </execution>
         </executions>
+        <configuration>              
+          <!-- 
+            Note the two following parameters are the default one. 
+            These are specified here just as a reminder. 
+            But as the Maven philosophy is strongly about conventions, 
+            it's better to just not specify them.
+          -->
+          <sourceDirectory>${basedir}/src/main/java-templates</sourceDirectory>
+          <targetDirectory>${project.build.directory}/generated-sources/java-templates</targetDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
