@@ -45,7 +45,7 @@ Specifying a character encoding scheme
         <version>${project.version}</version>
         <configuration>
           ...
-          <encoding>UTF-8</encoding>
+          <encoding>${project.build.sourceEncoding}</encoding>
           ...
         </configuration>
       </plugin>
