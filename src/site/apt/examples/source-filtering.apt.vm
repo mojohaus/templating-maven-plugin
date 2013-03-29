@@ -28,8 +28,8 @@
 
 Filtering a source folder
 
- The Templating Plugin <<filter-sources>> goal lets you filter a dedicated source folder.
- In one pass, it filters that folder and add the resulting filtered folder to the POM model
+ The Templating Maven Plugin <<filter-sources>> goal lets you filter a dedicated source folder.
+ In one pass, it filters that folder and adds the resulting filtered folder to the POM model
  as a source folder.
 
  If, for example, you have some of your code where you would like to reference properties coming
@@ -48,6 +48,7 @@ Filtering a source folder
         <version>${project.version}</version>
         <executions>
           <execution>
+            <id>filter-src</id>
             <goals>
               <goal>filter-sources</goal>
             </goals>
