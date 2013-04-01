@@ -9,7 +9,7 @@
 
 	<artifactId>templating-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>1.0-alpha-2-testmojoparent32</version>
+	<version>1.0-alpha-3-testmojoparent32-SNAPSHOT</version>
 
 	<name>Templating Maven Plugin</name>
 	<description>
@@ -44,9 +44,9 @@
 		<maven>${mavenVersion}</maven>
 	</prerequisites>
 	<scm>
-		<connection>scm:svn:https://svn.codehaus.org/mojo/tags/templating-maven-plugin-1.0-alpha-2-testmojoparent32</connection>
-		<developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/templating-maven-plugin-1.0-alpha-2-testmojoparent32</developerConnection>
-		<url>http://fisheye.codehaus.org/browse/mojo/tags/templating-maven-plugin-1.0-alpha-2-testmojoparent32</url>
+		<connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</connection>
+		<developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</developerConnection>
+		<url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/templating-maven-plugin</url>
 	</scm>
 	<properties>
 		<mavenVersion>2.2.1</mavenVersion>
