@@ -7,5 +7,5 @@ package pkg;
  */
 public class SomeClass
 {
-	public static final String VERSION = "est ${project.version}";
+	public static final String VERSION = "<${project.version}>";
 }
