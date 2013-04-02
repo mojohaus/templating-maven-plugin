@@ -31,10 +31,6 @@ import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
-/**
- * This mojo helps adding a filtered source folder in one go. This is typically useful if you want to use properties
- * coming from the POM inside parts of your source code that requires real constants, like annotations for example.
- */
 public abstract class AbstractFilterSourcesMojo
     extends AbstractMojo
 {

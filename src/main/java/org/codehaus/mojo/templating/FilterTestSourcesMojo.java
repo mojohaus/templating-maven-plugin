@@ -36,10 +36,10 @@ public class FilterTestSourcesMojo
     private File testSourceDirectory;
 
     /**
-     * Target folder where filtered sources will land.
+     * Output folder where filtered test sources will land.
      */
     @Parameter( defaultValue = "${project.build.directory}/generated-test-sources/java-templates" )
-    private File testTargetDirectory;
+    private File testOutputDirectory;
 
     @Override
     protected File getSourceDirectory()
@@ -50,7 +50,7 @@ public class FilterTestSourcesMojo
     @Override
     protected File getOutputDirectory()
     {
-        return testTargetDirectory;
+        return testOutputDirectory;
     }
 
     @Override
