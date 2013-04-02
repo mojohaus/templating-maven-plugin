@@ -14,33 +14,20 @@ package org.codehaus.mojo.templating;
  * the License.
  */
 
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
+import java.io.File;
+
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.filtering.MavenFilteringException;
-import org.apache.maven.shared.filtering.MavenResourcesExecution;
-import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 /**
- * This mojo helps adding a filtered source folder in one go. This is typically useful if you want
- * to use properties coming from the POM inside parts of your test source code that requires real
- * constants, like annotations for example.
+ * This mojo helps adding a filtered source folder in one go. This is typically useful if you want to use properties
+ * coming from the POM inside parts of your test source code that requires real constants, like annotations for example.
  */
 @Mojo( name = "filter-test-sources", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES )
 public class FilterTestSourcesMojo
-    extends AbstractMojo
+    extends AbstractFilterSourcesMojo
 {
     /**
      * Source directory that will be first filtered and then added as a classical source folder.
@@ -54,107 +41,21 @@ public class FilterTestSourcesMojo
     @Parameter( defaultValue = "${project.build.directory}/generated-test-sources/java-templates" )
     private File testTargetDirectory;
 
-    /**
-     * The character encoding scheme to be applied when filtering resources.
-     */
-    @Parameter( defaultValue = "${project.build.sourceEncoding}" )
-    private String encoding;
-
-    /**
-     * Expression preceded with the String won't be interpolated
-     * \${foo} will be replaced with ${foo}
-     */
-    @Parameter( property = "maven.resources.escapeString" )
-    protected String escapeString;
-
-    /**
-     * Set of delimiters for expressions to filter within the resources. These delimiters are specified in the
-     * form 'beginToken*endToken'. If no '*' is given, the delimiter is assumed to be the same for start and end.
-     * So, the default filtering delimiters might be specified as:
-     * <pre>
-     * &lt;delimiters&gt;
-     *   &lt;delimiter&gt;${*}&lt;/delimiter&gt;
-     *   &lt;delimiter&gt;@&lt;/delimiter&gt;
-     * &lt;/delimiters&gt;
-     * </pre>
-     * Since the '@' delimiter is the same on both ends, we don't need to specify '@*@' (though we can).
-     */
-    @Parameter
-    protected List<String> delimiters;
-
-    /**
-     * Controls whether the default delimiters are included in addition to those configured {@link #delimiters}. Does
-     * not have any effect if {@link #delimiters} is empty when the defaults will be included anyway.
-     */
-    @Parameter( defaultValue = "true" )
-    protected boolean useDefaultDelimiters;
-
-    @Parameter( defaultValue = "${session}", required = true, readonly = true )
-    private MavenSession session;
-
-    @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
-
-    @Component( hint = "default" )
-    private MavenResourcesFiltering mavenResourcesFiltering;
-
-    public void execute()
-        throws MojoExecutionException
+    @Override
+    protected File getSourceDirectory()
     {
-        getLog().debug( "source=" + testSourceDirectory + " target=" + testTargetDirectory );
+        return testSourceDirectory;
+    }
 
-        // 1 Copy with filtering the given source to target dir
-        List<Resource> resources = new ArrayList<Resource>();
-        Resource resource = new Resource();
-        resource.setFiltering( true );
-        getLog().debug( testSourceDirectory.getAbsolutePath() );
-        resource.setDirectory( testSourceDirectory.getAbsolutePath() );
-        resources.add( resource );
+    @Override
+    protected File getOutputDirectory()
+    {
+        return testTargetDirectory;
+    }
 
-        MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution( resources, testTargetDirectory, project, encoding, Collections.emptyList(),
-                                         Collections.<String>emptyList(), session );
-        mavenResourcesExecution.setInjectProjectBuildFilters( false );
-        mavenResourcesExecution.setEscapeString( escapeString );
-        // if these are NOT set, just use the defaults, which are '${*}' and '@'.
-        if ( delimiters != null && !delimiters.isEmpty() )
-        {
-            LinkedHashSet<String> delims = new LinkedHashSet<String>();
-            if ( useDefaultDelimiters )
-            {
-                delims.addAll( mavenResourcesExecution.getDelimiters() );
-            }
-
-            for ( String delim : delimiters )
-            {
-                if ( delim == null )
-                {
-                    // FIXME: ${filter:*} could also trigger this condition. Need a better long-term solution.
-                    delims.add( "${*}" );
-                }
-                else
-                {
-                    delims.add( delim );
-                }
-            }
-
-            mavenResourcesExecution.setDelimiters( delims );
-        }
-
-        try
-        {
-            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
-        }
-        catch ( MavenFilteringException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-
-        // 2 Add that dir to sources
-        this.project.addTestCompileSourceRoot( testTargetDirectory.getAbsolutePath() );
-        if ( getLog().isInfoEnabled() )
-        {
-            getLog().info( "Source directory: " + testTargetDirectory + " added." );
-        }
+    @Override
+    protected void addSourceFolderToProject( MavenProject mavenProject )
+    {
+        mavenProject.addTestCompileSourceRoot( getOutputDirectory().getAbsolutePath());
     }
 }
