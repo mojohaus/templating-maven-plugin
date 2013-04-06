@@ -28,7 +28,7 @@
 
 Usage
 
- The Templating Maven Plugin handles the copying and filtering of project sources to the target
+ The Templating Maven Plugin handles the copying and filtering of project sources to the output
  directory. The following examples describe the basic usage of the plugin.
 
  To handle filtering this plugin uses the 
@@ -36,26 +36,26 @@ Usage
  ${mavenFilteringVersion}).
 
 
-* Copy and filters your source files to the specified target directory
+* Copy and filters your source files to the specified output directory
 
 +-----+
 mvn templating:filter-sources
 +-----+
 
- Upon executing this command, your source files inside this directory will be copied and filtered to the target
+ Upon executing this command, your source files inside this directory will be copied and filtered to the output
  directory you specified (or the default one).
  Note: if you only want to filter resources files (not source code), you should use the standard src/main/resources 
  directory and the associated Maven Resources Plugin.
 
  Moreover, this goal is bound by default to the <<<generate-sources>>> phase.
 
-* Copy and filters your test source files to the specified target directory
+* Copy and filters your test source files to the specified output directory
 
 +-----+
 mvn templating:filter-test-sources
 +-----+
 
- Upon executing this command, your source files inside this directory will be copied and filtered to the target
+ Upon executing this command, your source files inside this directory will be copied and filtered to the output
  directory you specified (or the default one).
  Note: if you only want to filter resources files (not source code), you should use the standard src/test/resources
  directory and the associated Maven Resources Plugin.

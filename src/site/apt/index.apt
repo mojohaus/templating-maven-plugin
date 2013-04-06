@@ -28,7 +28,7 @@
 
 Templating Maven Plugin
 
- The templating maven plugin handles copying files from a source to a given target, while filtering them.
+ The templating maven plugin handles copying files from a source to a given output directory, while filtering them.
  This plugin is useful to filter Java Source Code if you need for example to have things in that code 
  replaced with some <properties> values. 
  

@@ -60,7 +60,7 @@ Filtering a source folder
 	            it's better to just not specify them.
 	          -->
 	          <sourceDirectory>${basedir}/src/main/java-templates</sourceDirectory>
-	          <targetDirectory>\${project.build.directory}/generated-sources/java-templates</targetDirectory>
+	          <outputDirectory>\${project.build.directory}/generated-sources/java-templates</outputDirectory>
 	        </configuration>
           </execution>
         </executions>
