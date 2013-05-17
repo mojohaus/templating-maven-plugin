@@ -77,22 +77,29 @@ public abstract class AbstractFilterSourcesMojo
     private MavenSession session;
 
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    private MavenProject project;
+    protected MavenProject project;
 
     @Component( hint = "default" )
-    private MavenResourcesFiltering mavenResourcesFiltering;
+    protected MavenResourcesFiltering mavenResourcesFiltering;
 
-    public void execute()
-        throws MojoExecutionException
-    {
-        getLog().debug( "source=" + getSourceDirectory() + " target=" + getOutputDirectory() );
+	public void execute() throws MojoExecutionException
+	{
+		File sourceDirectory = getSourceDirectory();
+		getLog().debug("source=" + sourceDirectory + " target=" + getOutputDirectory());
 
-        // 1 Copy with filtering the given source to target dir
-        List<Resource> resources = new ArrayList<Resource>();
+		if (!(sourceDirectory != null && sourceDirectory.exists()))
+		{
+			getLog().info(
+				"Request to add '" + sourceDirectory + "' folder. Not added since it does not exist.");
+			return;
+		}
+		
+		// 1 Copy with filtering the given source to target dir
+       List<Resource> resources = new ArrayList<Resource>();
         Resource resource = new Resource();
         resource.setFiltering( true );
-        getLog().debug( getSourceDirectory().getAbsolutePath() );
-        resource.setDirectory( getSourceDirectory().getAbsolutePath() );
+        getLog().debug( sourceDirectory.getAbsolutePath() );
+        resource.setDirectory( sourceDirectory.getAbsolutePath() );
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =

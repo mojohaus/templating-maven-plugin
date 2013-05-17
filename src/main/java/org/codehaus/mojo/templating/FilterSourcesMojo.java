@@ -33,7 +33,7 @@ public class FilterSourcesMojo
      * Source directory that will be first filtered and then added as a classical source folder.
      */
     @Parameter( defaultValue = "${basedir}/src/main/java-templates" )
-    private File sourceDirectory;
+    File sourceDirectory;
 
     /**
      * Output folder where filtered sources will land.
