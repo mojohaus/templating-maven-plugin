@@ -25,7 +25,7 @@ import org.apache.maven.project.MavenProject;
  * This mojo helps adding a filtered source folder in one go. This is typically useful if you want to use properties
  * coming from the POM inside parts of your test source code that requires real constants, like annotations for example.
  */
-@Mojo( name = "filter-test-sources", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES )
+@Mojo( name = "filter-test-sources", defaultPhase = LifecyclePhase.GENERATE_TEST_SOURCES, threadSafe = true )
 public class FilterTestSourcesMojo
     extends AbstractFilterSourcesMojo
 {
@@ -56,6 +56,6 @@ public class FilterTestSourcesMojo
     @Override
     protected void addSourceFolderToProject( MavenProject mavenProject )
     {
-        mavenProject.addTestCompileSourceRoot( getOutputDirectory().getAbsolutePath());
+        mavenProject.addTestCompileSourceRoot( getOutputDirectory().getAbsolutePath() );
     }
 }
