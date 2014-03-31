@@ -103,7 +103,7 @@ public abstract class AbstractFilterSourcesMojo
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding, Collections.emptyList(),
+            new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding, Collections.<String> emptyList(),
                                          Collections.<String> emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( false );
         mavenResourcesExecution.setEscapeString( escapeString );

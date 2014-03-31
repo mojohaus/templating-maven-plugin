@@ -51,7 +51,7 @@
 	<properties>
 		<mavenVersion>2.2.1</mavenVersion>
 		<mojo.java.target>1.5</mojo.java.target>
-		<mavenFilteringVersion>1.1</mavenFilteringVersion>
+		<mavenFilteringVersion>1.2</mavenFilteringVersion>
 	</properties>
 
 	<build>
