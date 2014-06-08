@@ -105,7 +105,7 @@ public abstract class AbstractFilterSourcesMojo
         MavenResourcesExecution mavenResourcesExecution =
             new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding, Collections.<String> emptyList(),
                                          Collections.<String> emptyList(), session );
-        mavenResourcesExecution.setInjectProjectBuildFilters( false );
+        mavenResourcesExecution.setInjectProjectBuildFilters( true );
         mavenResourcesExecution.setEscapeString( escapeString );
         // if these are NOT set, just use the defaults, which are '${*}' and '@'.
         if ( delimiters != null && !delimiters.isEmpty() )
