@@ -30,12 +30,17 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.sonatype.plexus.build.incremental.BuildContext;
 
 public abstract class AbstractFilterSourcesMojo
     extends AbstractMojo
 {
     protected abstract File getSourceDirectory();
+
     protected abstract File getOutputDirectory();
+
+    @Component
+    private BuildContext buildContext;
 
     /**
      * The character encoding scheme to be applied when filtering resources.
@@ -82,20 +87,22 @@ public abstract class AbstractFilterSourcesMojo
     @Component( hint = "default" )
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
-	public void execute() throws MojoExecutionException
-	{
-		File sourceDirectory = getSourceDirectory();
-		getLog().debug("source=" + sourceDirectory + " target=" + getOutputDirectory());
+    public void execute()
+        throws MojoExecutionException
+    {
+        File sourceDirectory = getSourceDirectory();
+        getLog().debug( "source=" + sourceDirectory + " target=" + getOutputDirectory() );
 
-		if (!(sourceDirectory != null && sourceDirectory.exists()))
-		{
-			getLog().info(
-				"Request to add '" + sourceDirectory + "' folder. Not added since it does not exist.");
-			return;
-		}
-		
-		// 1 Copy with filtering the given source to target dir
-       List<Resource> resources = new ArrayList<Resource>();
+        if ( !( sourceDirectory != null && sourceDirectory.exists() ) )
+        {
+            getLog().info( "Request to add '" + sourceDirectory + "' folder. Not added since it does not exist." );
+            return;
+        }
+
+        buildContext.removeMessages( sourceDirectory );
+
+        // 1 Copy with filtering the given source to target dir
+        List<Resource> resources = new ArrayList<Resource>();
         Resource resource = new Resource();
         resource.setFiltering( true );
         getLog().debug( sourceDirectory.getAbsolutePath() );
@@ -103,8 +110,8 @@ public abstract class AbstractFilterSourcesMojo
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding, Collections.<String> emptyList(),
-                                         Collections.<String> emptyList(), session );
+            new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding,
+                                         Collections.<String> emptyList(), Collections.<String> emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( true );
         mavenResourcesExecution.setEscapeString( escapeString );
         // if these are NOT set, just use the defaults, which are '${*}' and '@'.
@@ -138,16 +145,20 @@ public abstract class AbstractFilterSourcesMojo
         }
         catch ( MavenFilteringException e )
         {
+            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR, e );
             throw new MojoExecutionException( e.getMessage(), e );
         }
 
         // 2 Add that dir to sources
-        addSourceFolderToProject(this.project);
-        
+        addSourceFolderToProject( this.project );
+
         if ( getLog().isInfoEnabled() )
         {
             getLog().info( "Source directory: " + getOutputDirectory() + " added." );
         }
+        
+        buildContext.refresh( getOutputDirectory() );
     }
+
     protected abstract void addSourceFolderToProject( MavenProject mavenProject );
 }
