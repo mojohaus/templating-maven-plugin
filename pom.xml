@@ -47,9 +47,9 @@
     <maven>${mavenVersion}</maven>
   </prerequisites>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/templating-maven-plugin</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/templating-maven-plugin</url>
+    <connection>scm:git:https://github.com/mojohaus/templating-maven-plugin</connection>
+    <developerConnection>scm:git:git@github.com:mojohaus/templating-maven-plugin.git</developerConnection>
+    <url>https://github.com/mojohaus/templating-maven-plugin</url>
   </scm>
   <properties>
     <mavenVersion>2.2.1</mavenVersion>
