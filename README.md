@@ -1,6 +1,8 @@
 Templating Maven Plugin
 =======================
 
+[![Build Status](https://travis-ci.org/mojohaus/templating-maven-plugin.svg)](https://travis-ci.org/mojohaus/templating-maven-plugin)
+
 The templating maven plugin handles copying files from a source to a given output directory, while filtering them. This plugin is useful to filter Java Source Code if you need for example to have things in that code replaced with some properties values.
 
 Goals Overview
