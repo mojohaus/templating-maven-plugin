@@ -14,12 +14,6 @@ package org.codehaus.mojo.templating;
  * the License.
  */
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
@@ -30,11 +24,22 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.codehaus.plexus.util.FileUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.zip.CRC32;
 
 public abstract class AbstractFilterSourcesMojo
     extends AbstractMojo
 {
+    private static final int CHECKSUM_BUFFER = 4096;
+    private int copied = 0;
+
     protected abstract File getSourceDirectory();
 
     protected abstract File getOutputDirectory();
@@ -84,6 +89,18 @@ public abstract class AbstractFilterSourcesMojo
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
     protected MavenProject project;
 
+    /**
+     * Controls whether to overwrite files that are not changed, by default files will not be overwritten
+     */
+    @Parameter( defaultValue = "false" )
+    protected boolean overwrite;
+
+    /**
+     * Skips POM projects if set to true, which is the default option.
+     */
+    @Parameter( defaultValue = "true" )
+    protected boolean skipPoms;
+
     @Component( hint = "default" )
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
@@ -91,29 +108,103 @@ public abstract class AbstractFilterSourcesMojo
         throws MojoExecutionException
     {
         File sourceDirectory = getSourceDirectory();
-        getLog().debug( "source=" + sourceDirectory + " target=" + getOutputDirectory() );
-
-        if ( !( sourceDirectory != null && sourceDirectory.exists() ) )
+        if ( !preconditionsFulfilled( sourceDirectory ) )
         {
-            getLog().info( "Request to add '" + sourceDirectory + "' folder. Not added since it does not exist." );
             return;
         }
-
         buildContext.removeMessages( sourceDirectory );
 
-        // 1 Copy with filtering the given source to target dir
+        // 1 Copy with filtering the given source to temporary dir
+        copied = 0;
+        File temporaryDirectory = getTemporaryDirectory( sourceDirectory );
+        logInfo( "Coping files with filtering to temporary directory." );
+        logDebug( "Temporary director for filtering is: %s", temporaryDirectory );
+        filterSourceToTemporaryDir( sourceDirectory, temporaryDirectory );
+        // 2 Copy if needed
+        copyDirectoryStructure( temporaryDirectory, getOutputDirectory() );
+        cleanupTemporaryDirectory( temporaryDirectory );
+        if ( isSomethingBeenUpdated() )
+        {
+            buildContext.refresh( getOutputDirectory() );
+            logInfo( "Copied %d files to output directory: %s", copied, getOutputDirectory() );
+        }
+        else
+        {
+            logInfo( "No files needs to be copied to output directory. Up to date: %s", getOutputDirectory() );
+        }
+
+        // 3 Add that dir to sources
+        addSourceFolderToProject( this.project );
+        logInfo( "Source directory: %s added.", getOutputDirectory() );
+    }
+
+    protected int countCopiedFiles() {
+        return copied;
+    }
+
+    private void logInfo( String format, Object... args )
+    {
+        if ( getLog().isInfoEnabled() )
+        {
+            getLog().info( String.format( format, args ) );
+        }
+    }
+
+    private void logDebug( String format, Object... args )
+    {
+        if ( getLog().isDebugEnabled() )
+        {
+            getLog().debug( String.format( format, args ) );
+        }
+    }
+
+    private boolean isSomethingBeenUpdated()
+    {
+        return copied > 0;
+    }
+
+    private void cleanupTemporaryDirectory( File temporaryDirectory ) throws MojoExecutionException
+    {
+        try
+        {
+            FileUtils.forceDelete( temporaryDirectory );
+        }
+        catch ( IOException ex )
+        {
+            throw new MojoExecutionException( ex.getMessage(), ex );
+        }
+    }
+
+    private void filterSourceToTemporaryDir( final File sourceDirectory, final File temporaryDirectory )
+            throws MojoExecutionException
+    {
         List<Resource> resources = new ArrayList<Resource>();
         Resource resource = new Resource();
         resource.setFiltering( true );
-        getLog().debug( sourceDirectory.getAbsolutePath() );
+        logDebug( "Source absolute path: %s", sourceDirectory.getAbsolutePath() );
         resource.setDirectory( sourceDirectory.getAbsolutePath() );
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =
-            new MavenResourcesExecution( resources, getOutputDirectory(), project, encoding,
-                                         Collections.<String> emptyList(), Collections.<String> emptyList(), session );
+                new MavenResourcesExecution( resources, temporaryDirectory, project, encoding,
+                        Collections.<String>emptyList(), Collections.<String>emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( true );
         mavenResourcesExecution.setEscapeString( escapeString );
+        mavenResourcesExecution.setOverwrite( overwrite );
+        setDelimitersForExecution( mavenResourcesExecution );
+        try
+        {
+            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
+        }
+        catch ( MavenFilteringException e )
+        {
+            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR, e );
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    private void setDelimitersForExecution( MavenResourcesExecution mavenResourcesExecution )
+    {
         // if these are NOT set, just use the defaults, which are '${*}' and '@'.
         if ( delimiters != null && !delimiters.isEmpty() )
         {
@@ -138,26 +229,179 @@ public abstract class AbstractFilterSourcesMojo
 
             mavenResourcesExecution.setDelimiters( delims );
         }
+    }
 
+    private void preconditionsCopyDirectoryStructure( final File sourceDirectory, final File destinationDirectory,
+                                                      final File rootDestinationDirectory ) throws IOException
+    {
+        if ( sourceDirectory == null )
+        {
+            throw new IOException( "source directory can't be null." );
+        }
+
+        if ( destinationDirectory == null )
+        {
+            throw new IOException( "destination directory can't be null." );
+        }
+
+        if ( sourceDirectory.equals( destinationDirectory ) )
+        {
+            throw new IOException( "source and destination are the same directory." );
+        }
+
+        if ( !sourceDirectory.exists() )
+        {
+            throw new IOException( "Source directory doesn't exists (" + sourceDirectory.getAbsolutePath() + ")." );
+        }
+    }
+
+    private void copyDirectoryStructure( final File sourceDirectory, final File destinationDirectory) throws MojoExecutionException
+    {
         try
         {
-            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
+            File target = destinationDirectory;
+            if (!target.isAbsolute())
+            {
+                target = resolve( project.getBasedir(), destinationDirectory.getPath() );
+            }
+            copyDirectoryStructureWithIO( sourceDirectory, target, target );
         }
-        catch ( MavenFilteringException e )
+        catch ( IOException ex )
         {
-            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR, e );
-            throw new MojoExecutionException( e.getMessage(), e );
+            throw new MojoExecutionException( ex.getMessage(), ex );
         }
+    }
 
-        // 2 Add that dir to sources
-        addSourceFolderToProject( this.project );
-
-        if ( getLog().isInfoEnabled() )
+    private void copyDirectoryStructureWithIO( final File sourceDirectory, final File destinationDirectory,
+                                               final File rootDestinationDirectory ) throws IOException
+    {
+        preconditionsCopyDirectoryStructure( sourceDirectory, destinationDirectory, rootDestinationDirectory );
+        File[] files = sourceDirectory.listFiles();
+        if ( files == null )
         {
-            getLog().info( "Source directory: " + getOutputDirectory() + " added." );
+            return;
         }
-        
-        buildContext.refresh( getOutputDirectory() );
+        String sourcePath = sourceDirectory.getAbsolutePath();
+
+        for ( File file : files )
+        {
+            if ( file.equals( rootDestinationDirectory ) )
+            {
+                // We don't copy the destination directory in itself
+                continue;
+            }
+
+            String dest = file.getAbsolutePath();
+
+            dest = dest.substring( sourcePath.length() + 1 );
+
+            File destination = new File( destinationDirectory, dest );
+
+            if ( file.isFile() )
+            {
+                destination = destination.getParentFile();
+
+                if ( isFileDifferent( file, destination ) )
+                {
+                    copied++;
+                    FileUtils.copyFileToDirectory( file, destination );
+                }
+            }
+            else if ( file.isDirectory() )
+            {
+                if ( !destination.exists() && !destination.mkdirs() )
+                {
+                    throw new IOException(
+                            "Could not create destination directory '" + destination.getAbsolutePath() + "'." );
+                }
+
+                copyDirectoryStructureWithIO( file, destination, rootDestinationDirectory );
+            }
+            else
+            {
+                throw new IOException( "Unknown file type: " + file.getAbsolutePath() );
+            }
+        }
+    }
+
+    private File resolve( final File file, final String... subfile )
+    {
+        StringBuilder path = new StringBuilder();
+        path.append( file.getPath() );
+        for ( String fi : subfile )
+        {
+            path.append( File.separator );
+            path.append( fi );
+        }
+        return new File( path.toString() );
+    }
+
+    private boolean isFileDifferent( final File file, final File directory ) throws IOException
+    {
+        File targetFile = resolve( directory, file.getName() ).getAbsoluteFile();
+        return !targetFile.canRead() || getCrc32OfFile( file ) != getCrc32OfFile( targetFile );
+    }
+
+    private long getCrc32OfFile( final File target ) throws IOException
+    {
+        FileInputStream fis = null;
+        try
+        {
+            fis = new FileInputStream( target );
+            CRC32 crcMaker = new CRC32();
+            byte[] buffer = new byte[CHECKSUM_BUFFER];
+            int bytesRead;
+            while ( ( bytesRead = fis.read( buffer ) ) != -1 )
+            {
+                crcMaker.update( buffer, 0, bytesRead );
+            }
+            return crcMaker.getValue();
+        }
+        catch ( FileNotFoundException ex )
+        {
+            close( fis );
+            throw new IOException( ex.getLocalizedMessage(), ex );
+        }
+        finally
+        {
+            close( fis );
+        }
+    }
+
+    private void close( Closeable is ) throws IOException
+    {
+        if ( is != null )
+        {
+            is.close();
+        }
+    }
+
+    private File getTemporaryDirectory( File sourceDirectory ) throws MojoExecutionException
+    {
+        File basedir = project.getBasedir();
+        File target = new File(project.getBuild().getDirectory());
+        StringBuilder label = new StringBuilder( "templates-tmp" );
+        CRC32 crcMaker = new CRC32();
+        crcMaker.update( sourceDirectory.getPath().getBytes() );
+        label.append( crcMaker.getValue() );
+        String subfile = label.toString();
+        return target.isAbsolute() ? resolve( target, subfile ) : resolve( basedir, target.getPath(), subfile );
+    }
+
+    private boolean preconditionsFulfilled( File sourceDirectory )
+    {
+        if ( skipPoms && "pom".equals( project.getPackaging() ) )
+        {
+            logInfo( "Skipping a POM project type. Change a `skipPoms` to false to run anyway." );
+            return false;
+        }
+        logDebug( "source=%s target=%s", sourceDirectory, getOutputDirectory() );
+        if ( !( sourceDirectory != null && sourceDirectory.exists() ) )
+        {
+            logInfo( "Request to add '%s' folder. Not added since it does not exist.", sourceDirectory );
+            return false;
+        }
+        return true;
     }
 
     protected abstract void addSourceFolderToProject( MavenProject mavenProject );
