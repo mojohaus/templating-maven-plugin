@@ -121,7 +121,7 @@ public abstract class AbstractFilterSourcesMojo
         logDebug( "Temporary director for filtering is: %s", temporaryDirectory );
         filterSourceToTemporaryDir( sourceDirectory, temporaryDirectory );
         // 2 Copy if needed
-        copyDirectoryStructure( temporaryDirectory, getOutputDirectory(), getOutputDirectory() );
+        copyDirectoryStructure( temporaryDirectory, getOutputDirectory() );
         cleanupTemporaryDirectory( temporaryDirectory );
         if ( isSomethingBeenUpdated() )
         {
@@ -136,6 +136,10 @@ public abstract class AbstractFilterSourcesMojo
         // 3 Add that dir to sources
         addSourceFolderToProject( this.project );
         logInfo( "Source directory: %s added.", getOutputDirectory() );
+    }
+
+    protected int countCopiedFiles() {
+        return copied;
     }
 
     private void logInfo( String format, Object... args )
@@ -251,12 +255,16 @@ public abstract class AbstractFilterSourcesMojo
         }
     }
 
-    private void copyDirectoryStructure( final File sourceDirectory, final File destinationDirectory,
-                                         final File rootDestinationDirectory ) throws MojoExecutionException
+    private void copyDirectoryStructure( final File sourceDirectory, final File destinationDirectory) throws MojoExecutionException
     {
         try
         {
-            copyDirectoryStructureWithIO( sourceDirectory, destinationDirectory, rootDestinationDirectory );
+            File target = destinationDirectory;
+            if (!target.isAbsolute())
+            {
+                target = resolve( project.getBasedir(), destinationDirectory.getPath() );
+            }
+            copyDirectoryStructureWithIO( sourceDirectory, target, target );
         }
         catch ( IOException ex )
         {
@@ -370,20 +378,14 @@ public abstract class AbstractFilterSourcesMojo
 
     private File getTemporaryDirectory( File sourceDirectory ) throws MojoExecutionException
     {
-        try
-        {
-            File basedir = project.getBasedir().getCanonicalFile();
-            String target = project.getBuild().getDirectory();
-            StringBuilder label = new StringBuilder( "templates-tmp" );
-            CRC32 crcMaker = new CRC32();
-            crcMaker.update( sourceDirectory.getCanonicalPath().getBytes() );
-            label.append( crcMaker.getValue() );
-            return resolve( basedir, target, label.toString() );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
+        File basedir = project.getBasedir();
+        File target = new File(project.getBuild().getDirectory());
+        StringBuilder label = new StringBuilder( "templates-tmp" );
+        CRC32 crcMaker = new CRC32();
+        crcMaker.update( sourceDirectory.getPath().getBytes() );
+        label.append( crcMaker.getValue() );
+        String subfile = label.toString();
+        return target.isAbsolute() ? resolve( target, subfile ) : resolve( basedir, target.getPath(), subfile );
     }
 
     private boolean preconditionsFulfilled( File sourceDirectory )
