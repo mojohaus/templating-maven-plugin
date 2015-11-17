@@ -37,9 +37,4 @@ under the License.
             href="/examples/encoding.html"/>
     </menu>
   </body>
-  <custom>
-    <fluidoSkin>
-      <profile>pre-release</profile>
-    </fluidoSkin>
-  </custom>
 </project>
