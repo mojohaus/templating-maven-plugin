@@ -17,7 +17,7 @@ Usage
 <plugin>
     <groupId>org.codehaus.mojo</groupId>
     <artifactId>templating-maven-plugin</artifactId>
-    <version>1.0-alpha-3</version>
+    <version>1.0.0</version>
     <executions>
         <execution>
             <goals>
@@ -55,7 +55,7 @@ If, for example, you have some of your code where you would like to reference pr
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
-        <version>1.0-alpha-3</version>
+        <version>1.0.0</version>
         <executions>
           <execution>
             <id>filter-src</id>
@@ -99,7 +99,7 @@ For example, if we want to specify that the character encoding scheme be `UTF-8`
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
-        <version>1.0-alpha-3</version>
+        <version>1.0.0</version>
       </plugin>
     </plugins>
     ...
@@ -115,7 +115,7 @@ Goals Description
 
 #### Full name: ####
 
-`org.codehaus.mojo:templating-maven-plugin:1.0-alpha-3:filter-sources`
+`org.codehaus.mojo:templating-maven-plugin:1.0.0:filter-sources`
 
 #### Description: ####
 
@@ -148,7 +148,7 @@ useDefaultDelimiters | `boolean`	| Controls whether the default delimiters are i
 
 #### Full name: ####
 
-`org.codehaus.mojo:templating-maven-plugin:1.0-alpha-3:filter-test-sources`
+`org.codehaus.mojo:templating-maven-plugin:1.0.0:filter-test-sources`
 
 #### Description: ####
 
