@@ -78,6 +78,14 @@
     </developer>
   </developers>
 
+  <contributors>
+    <contributor>
+      <name>Krzysztof Suszyński</name>
+      <email>cardil@o2.pl</email>
+      <url>http://suszynski.org/</url>
+    </contributor>
+  </contributors>
+
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>
