@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2013 - 2015 MojoHaus</copyright>
     <item>
-      <title>File: 3,
-             Errors: 13,
+      <title>File: 4,
+             Errors: 14,
              Warnings: 5,
              Infos: 2
       </title>
@@ -61,6 +61,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="http://www.mojohaus.org/templating-maven-plugin/checkstyle.html#org.codehaus.mojo.templating.FilterSourcesMojo.java">org/codehaus/mojo/templating/FilterSourcesMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.mojohaus.org/templating-maven-plugin/checkstyle.html#org.codehaus.mojo.templating.HelpMojo.java">org/codehaus/mojo/templating/HelpMojo.java</a>
                 </td>
                 <td>
                   0
