@@ -26,9 +26,9 @@ under the License.
     <copyright>&#169;2013 - 2015 MojoHaus</copyright>
     <item>
       <title>File: 4,
-             Errors: 14,
-             Warnings: 5,
-             Infos: 2
+             Errors: 1,
+             Warnings: 0,
+             Infos: 0
       </title>
             <link>http://www.mojohaus.org/templating-maven-plugin/checkstyle.html</link>
       <description>
@@ -55,7 +55,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  0
                 </td>
               </tr>
                           <tr>
@@ -69,7 +69,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  0
                 </td>
               </tr>
                           <tr>
@@ -91,13 +91,13 @@ under the License.
                   <a href="http://www.mojohaus.org/templating-maven-plugin/checkstyle.html#org.codehaus.mojo.templating.AbstractFilterSourcesMojo.java">org/codehaus/mojo/templating/AbstractFilterSourcesMojo.java</a>
                 </td>
                 <td>
-                  2
+                  0
                 </td>
                 <td>
-                  5
+                  0
                 </td>
                 <td>
-                  11
+                  0
                 </td>
               </tr>
                       </tbody>
