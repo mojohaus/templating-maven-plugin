@@ -29,7 +29,7 @@
   </parent>
 
   <artifactId>templating-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <packaging>maven-plugin</packaging>
 
@@ -91,7 +91,7 @@
     <connection>scm:git:https://github.com/mojohaus/templating-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/templating-maven-plugin.git</developerConnection>
     <url>https://github.com/mojohaus/templating-maven-plugin</url>
-    <tag>templating-maven-plugin-1.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
