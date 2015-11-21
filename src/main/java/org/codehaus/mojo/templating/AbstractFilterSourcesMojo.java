@@ -1,18 +1,34 @@
 package org.codehaus.mojo.templating;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.zip.CRC32;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -27,21 +43,24 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.plexus.util.FileUtils;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.zip.CRC32;
-
+/**
+ * The base class for {@link FilterSourcesMojo} and {@link FilterTestSourcesMojo}
+ */
 public abstract class AbstractFilterSourcesMojo
     extends AbstractMojo
 {
     private static final int CHECKSUM_BUFFER = 4096;
+
     private int copied = 0;
 
+    /**
+     * @return The location of the source directory.
+     */
     protected abstract File getSourceDirectory();
 
+    /**
+     * @return The location of the output directory.
+     */
     protected abstract File getOutputDirectory();
 
     @Component
@@ -87,7 +106,7 @@ public abstract class AbstractFilterSourcesMojo
     private MavenSession session;
 
     @Parameter( defaultValue = "${project}", required = true, readonly = true )
-    protected MavenProject project;
+    private MavenProject project;
 
     /**
      * Controls whether to overwrite files that are not changed, by default files will not be overwritten
@@ -101,9 +120,13 @@ public abstract class AbstractFilterSourcesMojo
     @Parameter( defaultValue = "true" )
     protected boolean skipPoms;
 
+    /**
+     * The resources filtering which is used.
+     */
     @Component( hint = "default" )
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
+    /** {@inheritDoc} */
     public void execute()
         throws MojoExecutionException
     {
@@ -138,7 +161,11 @@ public abstract class AbstractFilterSourcesMojo
         logInfo( "Source directory: %s added.", getOutputDirectory() );
     }
 
-    protected int countCopiedFiles() {
+    /**
+     * @return number of copied files.
+     */
+    protected int countCopiedFiles()
+    {
         return copied;
     }
 
@@ -163,7 +190,8 @@ public abstract class AbstractFilterSourcesMojo
         return copied > 0;
     }
 
-    private void cleanupTemporaryDirectory( File temporaryDirectory ) throws MojoExecutionException
+    private void cleanupTemporaryDirectory( File temporaryDirectory )
+        throws MojoExecutionException
     {
         try
         {
@@ -176,7 +204,7 @@ public abstract class AbstractFilterSourcesMojo
     }
 
     private void filterSourceToTemporaryDir( final File sourceDirectory, final File temporaryDirectory )
-            throws MojoExecutionException
+        throws MojoExecutionException
     {
         List<Resource> resources = new ArrayList<Resource>();
         Resource resource = new Resource();
@@ -186,8 +214,8 @@ public abstract class AbstractFilterSourcesMojo
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution =
-                new MavenResourcesExecution( resources, temporaryDirectory, project, encoding,
-                        Collections.<String>emptyList(), Collections.<String>emptyList(), session );
+            new MavenResourcesExecution( resources, temporaryDirectory, project, encoding,
+                                         Collections.<String>emptyList(), Collections.<String>emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( true );
         mavenResourcesExecution.setEscapeString( escapeString );
         mavenResourcesExecution.setOverwrite( overwrite );
@@ -198,7 +226,8 @@ public abstract class AbstractFilterSourcesMojo
         }
         catch ( MavenFilteringException e )
         {
-            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR, e );
+            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR,
+                                     e );
             throw new MojoExecutionException( e.getMessage(), e );
         }
     }
@@ -232,7 +261,8 @@ public abstract class AbstractFilterSourcesMojo
     }
 
     private void preconditionsCopyDirectoryStructure( final File sourceDirectory, final File destinationDirectory,
-                                                      final File rootDestinationDirectory ) throws IOException
+                                                      final File rootDestinationDirectory )
+                                                          throws IOException
     {
         if ( sourceDirectory == null )
         {
@@ -255,12 +285,13 @@ public abstract class AbstractFilterSourcesMojo
         }
     }
 
-    private void copyDirectoryStructure( final File sourceDirectory, final File destinationDirectory) throws MojoExecutionException
+    private void copyDirectoryStructure( final File sourceDirectory, final File destinationDirectory )
+        throws MojoExecutionException
     {
         try
         {
             File target = destinationDirectory;
-            if (!target.isAbsolute())
+            if ( !target.isAbsolute() )
             {
                 target = resolve( project.getBasedir(), destinationDirectory.getPath() );
             }
@@ -273,7 +304,8 @@ public abstract class AbstractFilterSourcesMojo
     }
 
     private void copyDirectoryStructureWithIO( final File sourceDirectory, final File destinationDirectory,
-                                               final File rootDestinationDirectory ) throws IOException
+                                               final File rootDestinationDirectory )
+                                                   throws IOException
     {
         preconditionsCopyDirectoryStructure( sourceDirectory, destinationDirectory, rootDestinationDirectory );
         File[] files = sourceDirectory.listFiles();
@@ -311,8 +343,8 @@ public abstract class AbstractFilterSourcesMojo
             {
                 if ( !destination.exists() && !destination.mkdirs() )
                 {
-                    throw new IOException(
-                            "Could not create destination directory '" + destination.getAbsolutePath() + "'." );
+                    throw new IOException( "Could not create destination directory '" + destination.getAbsolutePath()
+                        + "'." );
                 }
 
                 copyDirectoryStructureWithIO( file, destination, rootDestinationDirectory );
@@ -336,13 +368,15 @@ public abstract class AbstractFilterSourcesMojo
         return new File( path.toString() );
     }
 
-    private boolean isFileDifferent( final File file, final File directory ) throws IOException
+    private boolean isFileDifferent( final File file, final File directory )
+        throws IOException
     {
         File targetFile = resolve( directory, file.getName() ).getAbsoluteFile();
         return !targetFile.canRead() || getCrc32OfFile( file ) != getCrc32OfFile( targetFile );
     }
 
-    private long getCrc32OfFile( final File target ) throws IOException
+    private long getCrc32OfFile( final File target )
+        throws IOException
     {
         FileInputStream fis = null;
         try
@@ -368,7 +402,8 @@ public abstract class AbstractFilterSourcesMojo
         }
     }
 
-    private void close( Closeable is ) throws IOException
+    private void close( Closeable is )
+        throws IOException
     {
         if ( is != null )
         {
@@ -376,10 +411,11 @@ public abstract class AbstractFilterSourcesMojo
         }
     }
 
-    private File getTemporaryDirectory( File sourceDirectory ) throws MojoExecutionException
+    private File getTemporaryDirectory( File sourceDirectory )
+        throws MojoExecutionException
     {
         File basedir = project.getBasedir();
-        File target = new File(project.getBuild().getDirectory());
+        File target = new File( project.getBuild().getDirectory() );
         StringBuilder label = new StringBuilder( "templates-tmp" );
         CRC32 crcMaker = new CRC32();
         crcMaker.update( sourceDirectory.getPath().getBytes() );
@@ -404,5 +440,8 @@ public abstract class AbstractFilterSourcesMojo
         return true;
     }
 
+    /**
+     * @param mavenProject {@link MavenProject}
+     */
     protected abstract void addSourceFolderToProject( MavenProject mavenProject );
 }
