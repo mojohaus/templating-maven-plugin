@@ -19,7 +19,7 @@ package org.codehaus.mojo.templating;
  * under the License.
  */
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.net.URL;
@@ -102,12 +102,10 @@ public class MavenProjectStub
         assert pomUrl != null : "Could not load: " + load;
         String pomPath = pomUrl.getPath();
         File pomFile = new File( pomPath );
-        assertThat( pomFile ).exists();
-        assertThat( pomFile ).isFile();
+        assertThat( pomFile ).exists().isFile();
 
         File baseDir = pomFile.getParentFile();
-        assertThat( baseDir ).exists();
-        assertThat( baseDir ).isDirectory();
+        assertThat( baseDir ).exists().isDirectory();
         return new MavenProjectStub( baseDir );
     }
 
