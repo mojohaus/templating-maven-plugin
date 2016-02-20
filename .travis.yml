@@ -1,9 +1,15 @@
 ---
 language: java
-script: mvn verify -B
+# We would like to test with Open JDK 8
+before_install:
+  - sudo apt-get install openjdk-8-jdk
+
+install: true
+
+script: 
+  - "mvn --batch-mode -Prun-its clean verify"
 jdk:
  - oraclejdk8
  - oraclejdk7
- - openjdk8
  - openjdk7
  - openjdk6
