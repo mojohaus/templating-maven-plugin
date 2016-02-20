@@ -1,12 +1,5 @@
 ---
 language: java
-# We would like to test with Open JDK 8
-before_install:
-  - sudo add-apt-repository ppa:openjdk-r/ppa -y
-  - sudo apt-get update 
-  - sudo apt-get install openjdk-8-jdk
-  - sudo update-alternatives --config javac
-  - javac -version
 
 install: true
 
