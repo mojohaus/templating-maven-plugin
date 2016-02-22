@@ -20,5 +20,5 @@ jdk:
 
 matrix:
   exclude:
-    - jdk: oraclejdk6
+    - jdk: openjdk6
       env: MAVEN_VERSION=3.3.9
