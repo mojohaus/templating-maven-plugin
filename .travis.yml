@@ -17,3 +17,8 @@ jdk:
  - oraclejdk7
  - openjdk7
  - openjdk6
+
+matrix:
+  exclude:
+    - jdk: oraclejdk6
+      env: MAVEN_VERSION=3.3.9
