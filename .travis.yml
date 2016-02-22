@@ -8,7 +8,7 @@ env:
 
 install:
   - "mvn -N io.takari:maven:wrapper -Dmaven=${MAVEN_VERSION}"
-  - "./mvnw --show-version --errors --batch-mode test-compile dependency:go-offline"
+
 script:
   - "./mvnw --show-version --errors --batch-mode -Prun-its clean verify"
 
@@ -16,9 +16,3 @@ jdk:
  - oraclejdk8
  - oraclejdk7
  - openjdk7
- - openjdk6
-
-matrix:
-  exclude:
-    - jdk: openjdk6
-      env: MAVEN_VERSION=3.3.9
