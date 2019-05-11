@@ -6,6 +6,8 @@ env:
   - MAVEN_VERSION=3.2.5
   - MAVEN_VERSION=3.3.9
   - MAVEN_VERSION=3.5.3
+  - MAVEN_VERSION=3.6.0
+  - MAVEN_VERSION=3.6.1
 
 install:
   - "mvn -N io.takari:maven:wrapper -Dmaven=${MAVEN_VERSION} -Dhttps.protocols=TLSv1.2"
@@ -14,7 +16,7 @@ script:
   - "./mvnw --show-version --errors --batch-mode -Prun-its clean verify -Dhttps.protocols=TLSv1.2"
 
 jdk:
+ - openjdk11
  - openjdk10
  - openjdk9
  - openjdk8
- - openjdk7
