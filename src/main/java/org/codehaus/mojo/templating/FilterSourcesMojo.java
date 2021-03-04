@@ -46,6 +46,9 @@ public class FilterSourcesMojo
     @Parameter( defaultValue = "${project.build.directory}/generated-sources/java-templates" )
     private File outputDirectory;
 
+    @Parameter( defaultValue = "" )
+    private String packageName;
+
     @Override
     protected File getSourceDirectory()
     {
@@ -55,7 +58,28 @@ public class FilterSourcesMojo
     @Override
     protected File getOutputDirectory()
     {
-        return outputDirectory;
+        if (packageName != null && !packageName.isEmpty())
+            return new File(outputDirectory.getAbsolutePath().concat(File.separator).concat(getPackageName()));
+        else
+            return sourceDirectory;
+    }
+
+    protected String getPackageName()
+    {
+        if (!packageName.isEmpty())
+        {
+            if (packageName.startsWith("\""))
+            {
+                packageName = packageName.substring(1, packageName.length());
+            }
+
+            if (packageName.endsWith("\""))
+            {
+                packageName = packageName.substring(0, packageName.length() - 1);
+            }
+        }
+
+        return packageName;
     }
 
     @Override
