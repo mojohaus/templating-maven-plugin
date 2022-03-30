@@ -1,0 +1,3 @@
+_extends: .github
+name-template: 'taglist-maven-plugin--$NEXT_MINOR_VERSION'
+tag-template: 'taglist-maven-plugin-$NEXT_MINOR_VERSION'
