@@ -2,7 +2,7 @@ Templating Maven Plugin
 =======================
 
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/mojohaus/templating-maven-plugin.svg?label=License)](http://www.apache.org/licenses/)
-[![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.mojo/templating-maven-plugin.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Ctemplating-maven-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.mojo/templating-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.codehaus.mojo/templating-maven-plugin)
 [![Build Status](https://travis-ci.org/mojohaus/templating-maven-plugin.svg)](https://travis-ci.org/mojohaus/templating-maven-plugin)
 
 The [Templating Maven Plugin](http://www.mojohaus.org/templating-maven-plugin/)
