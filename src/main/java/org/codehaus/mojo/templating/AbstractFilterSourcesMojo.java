@@ -140,8 +140,8 @@ public abstract class AbstractFilterSourcesMojo
         // 1 Copy with filtering the given source to temporary dir
         copied = 0;
         File temporaryDirectory = getTemporaryDirectory( sourceDirectory );
-        logInfo( "Coping files with filtering to temporary directory." );
-        logDebug( "Temporary director for filtering is: %s", temporaryDirectory );
+        logInfo( "Copying files with filtering to temporary directory." );
+        logDebug( "Temporary directory for filtering is: %s", temporaryDirectory );
         filterSourceToTemporaryDir( sourceDirectory, temporaryDirectory );
         // 2 Copy if needed
         copyDirectoryStructure( temporaryDirectory, getOutputDirectory() );
@@ -153,7 +153,7 @@ public abstract class AbstractFilterSourcesMojo
         }
         else
         {
-            logInfo( "No files needs to be copied to output directory. Up to date: %s", getOutputDirectory() );
+            logInfo( "No files need to be copied to output directory. Up to date: %s", getOutputDirectory() );
         }
 
         // 3 Add that dir to sources
@@ -428,13 +428,13 @@ public abstract class AbstractFilterSourcesMojo
     {
         if ( skipPoms && "pom".equals( project.getPackaging() ) )
         {
-            logInfo( "Skipping a POM project type. Change a `skipPoms` to false to run anyway." );
+            logInfo( "Skipping POM project type. Change `skipPoms` to false to run anyway." );
             return false;
         }
         logDebug( "source=%s target=%s", sourceDirectory, getOutputDirectory() );
         if ( !( sourceDirectory != null && sourceDirectory.exists() ) )
         {
-            logInfo( "Request to add '%s' folder. Not added since it does not exist.", sourceDirectory );
+            logInfo( "Requested directory '%s' not added since it does not exist.", sourceDirectory );
             return false;
         }
         return true;
