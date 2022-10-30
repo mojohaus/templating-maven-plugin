@@ -41,7 +41,6 @@ import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.plexus.util.FileUtils;
-import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
  * The base class for {@link FilterSourcesMojo} and {@link FilterTestSourcesMojo}
@@ -62,9 +61,6 @@ public abstract class AbstractFilterSourcesMojo
      * @return The location of the output directory.
      */
     protected abstract File getOutputDirectory();
-
-    @Component
-    private BuildContext buildContext;
 
     /**
      * The character encoding scheme to be applied when filtering resources.
@@ -135,7 +131,6 @@ public abstract class AbstractFilterSourcesMojo
         {
             return;
         }
-        buildContext.removeMessages( sourceDirectory );
 
         // 1 Copy with filtering the given source to temporary dir
         copied = 0;
@@ -148,7 +143,6 @@ public abstract class AbstractFilterSourcesMojo
         cleanupTemporaryDirectory( temporaryDirectory );
         if ( isSomethingBeenUpdated() )
         {
-            buildContext.refresh( getOutputDirectory() );
             logInfo( "Copied %d files to output directory: %s", copied, getOutputDirectory() );
         }
         else
@@ -226,8 +220,6 @@ public abstract class AbstractFilterSourcesMojo
         }
         catch ( MavenFilteringException e )
         {
-            buildContext.addMessage( getSourceDirectory(), 1, 1, "Filtering Exception", BuildContext.SEVERITY_ERROR,
-                                     e );
             throw new MojoExecutionException( e.getMessage(), e );
         }
     }
