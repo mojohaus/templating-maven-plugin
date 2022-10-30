@@ -41,7 +41,6 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-import org.sonatype.plexus.build.incremental.BuildContext;
 
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
@@ -69,9 +68,6 @@ public class AbstractFilterSourcesMojoTest
 
     @Spy
     private File outputDirectory = resolve( new File( "target" ), "generated-sources", "java-templates" );
-
-    @Mock
-    private BuildContext buildContext;
 
     @InjectMocks
     private AbstractFilterSourcesMojo mojo = new FilterSourcesMojo();
@@ -124,7 +120,6 @@ public class AbstractFilterSourcesMojoTest
 
         // then
         verify( mavenResourcesFiltering, times( 2 ) ).filterResources( any( MavenResourcesExecution.class ) );
-        verify( buildContext, times( 1 ) ).refresh( outputDirectory );
         verify( project, times( 2 ) ).addCompileSourceRoot( outputDirectory.getAbsolutePath() );
     }
 
