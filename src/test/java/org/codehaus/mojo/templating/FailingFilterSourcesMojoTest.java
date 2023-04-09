@@ -34,7 +34,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @RunWith( value = Parameterized.class )
 // Let's play with Parameterized, I've been wanted to do that for quite a long time :-).
@@ -67,6 +67,6 @@ public class FailingFilterSourcesMojoTest
         filterSourcesMojo.mavenResourcesFiltering = mock;
 
         filterSourcesMojo.execute();
-        verifyZeroInteractions( mock );
+        verifyNoInteractions( mock );
     }
 }
