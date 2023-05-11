@@ -200,7 +200,7 @@ public abstract class AbstractFilterSourcesMojo
     private void filterSourceToTemporaryDir( final File sourceDirectory, final File temporaryDirectory )
         throws MojoExecutionException
     {
-        List<Resource> resources = new ArrayList<Resource>();
+        List<Resource> resources = new ArrayList<>();
         Resource resource = new Resource();
         resource.setFiltering( true );
         logDebug( "Source absolute path: %s", sourceDirectory.getAbsolutePath() );
@@ -209,7 +209,7 @@ public abstract class AbstractFilterSourcesMojo
 
         MavenResourcesExecution mavenResourcesExecution =
             new MavenResourcesExecution( resources, temporaryDirectory, project, encoding,
-                                         Collections.<String>emptyList(), Collections.<String>emptyList(), session );
+                                         Collections.emptyList(), Collections.emptyList(), session );
         mavenResourcesExecution.setInjectProjectBuildFilters( true );
         mavenResourcesExecution.setEscapeString( escapeString );
         mavenResourcesExecution.setOverwrite( overwrite );
@@ -229,7 +229,7 @@ public abstract class AbstractFilterSourcesMojo
         // if these are NOT set, just use the defaults, which are '${*}' and '@'.
         if ( delimiters != null && !delimiters.isEmpty() )
         {
-            LinkedHashSet<String> delims = new LinkedHashSet<String>();
+            LinkedHashSet<String> delims = new LinkedHashSet<>();
             if ( useDefaultDelimiters )
             {
                 delims.addAll( mavenResourcesExecution.getDelimiters() );
@@ -403,9 +403,7 @@ public abstract class AbstractFilterSourcesMojo
         }
     }
 
-    private File getTemporaryDirectory( File sourceDirectory )
-        throws MojoExecutionException
-    {
+    private File getTemporaryDirectory( File sourceDirectory ) {
         File basedir = project.getBasedir();
         File target = new File( project.getBuild().getDirectory() );
         StringBuilder label = new StringBuilder( "templates-tmp" );

@@ -20,7 +20,6 @@ package org.codehaus.mojo.templating;
  */
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +38,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,7 +53,6 @@ import static org.mockito.Mockito.verify;
 @RunWith( MockitoJUnitRunner.class )
 public class AbstractFilterSourcesMojoTest
 {
-
     @Spy
     private MavenProject project = MavenProjectStub.createProjectForITExample( "sample-simple" );
 
@@ -130,7 +129,7 @@ public class AbstractFilterSourcesMojoTest
         public Void answer( InvocationOnMock invocation )
             throws Throwable
         {
-            MavenResourcesExecution arg = MavenResourcesExecution.class.cast( invocation.getArguments()[0] );
+            MavenResourcesExecution arg = (MavenResourcesExecution) invocation.getArguments()[0];
             File source = new File( arg.getResources().iterator().next().getDirectory() );
             assertThat( source ).exists();
             assertThat( source ).isDirectory();
