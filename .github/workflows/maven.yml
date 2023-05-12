@@ -26,4 +26,4 @@ jobs:
     with:
       ff-maven: "3.9.2"                     # Maven version for fail-fast-build
       maven-matrix: '[ "3.2.5", "3.9.2" ]'  # Maven versions matrix for verify builds
-      verify-fail-fast: "false"             # Fail-fast for verify builds
+      verify-fail-fast: false               # Fail-fast for verify builds
