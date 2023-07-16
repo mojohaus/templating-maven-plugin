@@ -97,7 +97,7 @@ public class MavenProjectStub
 
     public static MavenProject createProjectForITExample( String exampleName )
     {
-        String load = exampleName + File.separator + "pom.xml";
+        String load = exampleName + '/' + "pom.xml";
         URL pomUrl = MavenProjectStub.class.getClassLoader().getResource( load );
         assert pomUrl != null : "Could not load: " + load;
         String pomPath = pomUrl.getPath();
