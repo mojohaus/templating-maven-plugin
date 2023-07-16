@@ -26,11 +26,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.input.XmlStreamReader;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.utils.ReaderFactory;
 
 /**
  * @author Krzysztof Suszyński <krzysztof.suszynski@wavesoftware.pl>
@@ -60,9 +60,9 @@ public class MavenProjectStub
     {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model;
-        try
+        try ( XmlStreamReader in = new XmlStreamReader( new File( getBasedir(), "pom.xml" ) ) )
         {
-            model = pomReader.read( ReaderFactory.newXmlReader( new File( getBasedir(), "pom.xml" ) ) );
+            model = pomReader.read(in);
             setModel( model );
         }
         catch ( Exception e )
