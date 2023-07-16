@@ -20,17 +20,21 @@ package org.codehaus.mojo.templating;
  */
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.apache.maven.shared.utils.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,11 +44,6 @@ import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * @author Krzysztof Suszyński <krzysztof.suszynski@wavesoftware.pl>
@@ -76,7 +75,7 @@ public class AbstractFilterSourcesMojoTest
         throws IOException
     {
         File target = resolve( project.getBasedir(), outputDirectory.getPath() );
-        FileUtils.forceDelete( target );
+        FileUtils.deleteQuietly( target );
     }
 
     @Test
@@ -135,7 +134,7 @@ public class AbstractFilterSourcesMojoTest
             assertThat( source ).isDirectory();
             File destination = arg.getOutputDirectory();
             assertThat( destination ).doesNotExist();
-            FileUtils.copyDirectoryStructure( source, destination );
+            FileUtils.copyDirectory( source, destination );
             return null;
         }
     }
