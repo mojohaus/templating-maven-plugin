@@ -125,6 +125,7 @@ public class AbstractFilterSourcesMojoTest
         implements Answer<Void>
     {
 
+        @Override
         public Void answer( InvocationOnMock invocation )
             throws Throwable
         {

@@ -123,6 +123,7 @@ public abstract class AbstractFilterSourcesMojo
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
     /** {@inheritDoc} */
+    @Override
     public void execute()
         throws MojoExecutionException
     {
