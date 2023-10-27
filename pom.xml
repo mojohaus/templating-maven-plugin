@@ -104,7 +104,7 @@
   </ciManagement>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.6.3</mavenVersion>
     <mojo.java.target>8</mojo.java.target>
     <mavenFilteringVersion>3.3.1</mavenFilteringVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
