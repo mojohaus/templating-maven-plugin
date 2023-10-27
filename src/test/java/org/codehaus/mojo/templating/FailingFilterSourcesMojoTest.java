@@ -25,32 +25,28 @@ import java.util.Collection;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyNoInteractions;
 
-@RunWith( value = Parameterized.class )
 // Let's play with Parameterized, I've been wanted to do that for quite a long time :-).
 public class FailingFilterSourcesMojoTest
 {
-    @Parameter( 0 )
     public File failingParam;
 
-    @Parameters
     public static Collection<File[]> getFailingParameters()
     {
         return Arrays.asList( new File[] { null }, new File[] { new File( "/non/existing/path/yodleyyyyeee" ) } );
     }
 
-    @Test
-    public void testBadDirectoryDoesNotAddSourceFolder()
-        throws MojoExecutionException {
+    @MethodSource("getFailingParameters")
+    @ParameterizedTest
+    void testBadDirectoryDoesNotAddSourceFolder(File failingParam)
+                                     throws MojoExecutionException {
+        initFailingFilterSourcesMojoTest( failingParam );
         FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo()
         {
             @Override
@@ -66,5 +62,9 @@ public class FailingFilterSourcesMojoTest
 
         filterSourcesMojo.execute();
         verifyNoInteractions( mock );
+    }
+
+    public void initFailingFilterSourcesMojoTest(File failingParam) {
+        this.failingParam = failingParam;
     }
 }

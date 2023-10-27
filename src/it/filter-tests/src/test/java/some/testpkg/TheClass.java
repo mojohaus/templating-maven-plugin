@@ -1,7 +1,7 @@
 package some.testpkg;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings( net.batmat.maven.SomeTestClass.VERSION )
 public class TheClass
@@ -9,6 +9,6 @@ public class TheClass
     @Test
     public void testFoo()
     {
-        Assert.assertEquals( "%1.0-specialtestversion%", net.batmat.maven.SomeTestClass.VERSION );
+        assertEquals( "%1.0-specialtestversion%", net.batmat.maven.SomeTestClass.VERSION );
     }
 }

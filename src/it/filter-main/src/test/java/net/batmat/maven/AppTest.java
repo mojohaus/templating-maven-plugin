@@ -1,12 +1,13 @@
 package net.batmat.maven;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
-public class AppTest 
+public class AppTest
 {
-    @org.junit.Test
+    @Test
     public void testApp()
     {
-        Assert.assertEquals( "<1.0-specialversion>", pkg.SomeClass.VERSION);
+        assertEquals( "<1.0-specialversion>", pkg.SomeClass.VERSION);
     }
 }
