@@ -1,7 +1,8 @@
 package pkg;
-import org.junit.Ignore;
 
-@Ignore(
+import org.junit.jupiter.api.Disabled;
+
+@Disabled(
 "${someprop}" +
 "@someprop@" +
 "${someprop}@someprop@ @someprop@${someprop}"

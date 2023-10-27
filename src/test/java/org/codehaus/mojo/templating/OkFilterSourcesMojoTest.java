@@ -24,18 +24,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 
 import org.apache.maven.project.MavenProject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-public class OkFilterSourcesMojoTest
+class OkFilterSourcesMojoTest
 {
     @Test
-    public void testExistingDirectoryDoesNotAddSourceFolder()
+    void testExistingDirectoryDoesNotAddSourceFolder()
     {
         final StringBuilder placeholder = new StringBuilder();
         FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo()
@@ -53,7 +54,7 @@ public class OkFilterSourcesMojoTest
         Mockito.doThrow( IllegalArgumentException.class ).when( mock ).addTestCompileSourceRoot( anyString() );
 
         filterSourcesMojo.addSourceFolderToProject( mock );
-
+        assertEquals( "called", placeholder.toString() );
         assertThat( placeholder.toString() ).isEqualTo( "called" );
         verify( mock, never() ).addTestCompileSourceRoot( anyString() );
     }

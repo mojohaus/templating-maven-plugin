@@ -26,7 +26,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.MavenSession;
@@ -35,22 +34,22 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 /**
  * @author Krzysztof Suszyński <krzysztof.suszynski@wavesoftware.pl>
  * @since 2015-11-17
  */
-@RunWith( MockitoJUnitRunner.class )
-public class AbstractFilterSourcesMojoTest
+@ExtendWith(MockitoExtension.class)
+class AbstractFilterSourcesMojoTest
 {
     @Spy
     private MavenProject project = MavenProjectStub.createProjectForITExample( "sample-simple" );
@@ -70,16 +69,14 @@ public class AbstractFilterSourcesMojoTest
     @InjectMocks
     private AbstractFilterSourcesMojo mojo = new FilterSourcesMojo();
 
-    @Before
-    public void before()
-        throws IOException
-    {
+    @BeforeEach
+    void before() {
         File target = resolve( project.getBasedir(), outputDirectory.getPath() );
         FileUtils.deleteQuietly( target );
     }
 
     @Test
-    public void testGetOutputDirectory()
+    void testGetOutputDirectory()
     {
         // when
         File file = mojo.getOutputDirectory();
@@ -90,7 +87,7 @@ public class AbstractFilterSourcesMojoTest
     }
 
     @Test
-    public void testGetSourceDirectory()
+    void testGetSourceDirectory()
     {
         // when
         File file = mojo.getSourceDirectory();
@@ -104,8 +101,7 @@ public class AbstractFilterSourcesMojoTest
     }
 
     @Test
-    public void testExecute()
-        throws MojoExecutionException, MavenFilteringException
+    void testExecute() throws MojoExecutionException, MavenFilteringException
     {
         // given
         doAnswer( new MockCopyAnswer() ).when( mavenResourcesFiltering ).filterResources( any( MavenResourcesExecution.class ) );

@@ -1,13 +1,14 @@
 package pkg;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
+
 
 /* some stupid doc
  * basedir=${basedir}
- * 
+ *
  * some new code
  * et bim
  */
-@Ignore("${someprop}")
+@Disabled("${someprop}")
 public class SomeClass
 {
 	public static final String VERSION = "<${project.version}>";

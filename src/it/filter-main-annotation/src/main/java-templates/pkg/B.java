@@ -1,8 +1,8 @@
 package pkg;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 
-@Ignore( "@someprop@")
+@Disabled( "@someprop@")
 public class B {
-	public static final String FILTER_A="${someprop}";        
+	public static final String FILTER_A="${someprop}";
 	public static final String FILTER_B="@someprop@";
 }
