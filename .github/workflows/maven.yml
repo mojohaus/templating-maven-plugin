@@ -25,6 +25,7 @@ jobs:
     uses: apache/maven-gh-actions-shared/.github/workflows/maven-verify.yml@v3
     with:
       verify-fail-fast: false               # Fail-fast for verify builds
+      maven-matrix: '[ "3.8.8", "3.9.6" ]'
       matrix-exclude: >
         [
           {"jdk": "8"}
