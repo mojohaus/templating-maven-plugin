@@ -19,12 +19,6 @@ package org.codehaus.mojo.templating;
  * under the License.
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
@@ -44,15 +38,20 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 /**
  * @author Krzysztof Suszyński <krzysztof.suszynski@wavesoftware.pl>
  * @since 2015-11-17
  */
 @ExtendWith(MockitoExtension.class)
-class AbstractFilterSourcesMojoTest
-{
+class AbstractFilterSourcesMojoTest {
     @Spy
-    private MavenProject project = MavenProjectStub.createProjectForITExample( "sample-simple" );
+    private MavenProject project = MavenProjectStub.createProjectForITExample("sample-simple");
 
     @Mock
     private MavenSession session;
@@ -61,88 +60,81 @@ class AbstractFilterSourcesMojoTest
     private MavenResourcesFiltering mavenResourcesFiltering;
 
     @Spy
-    private File sourceDirectory = resolve( project.getBasedir(), "src", "main", "java-templates" );
+    private File sourceDirectory = resolve(project.getBasedir(), "src", "main", "java-templates");
 
     @Spy
-    private File outputDirectory = resolve( new File( "target" ), "generated-sources", "java-templates" );
+    private File outputDirectory = resolve(new File("target"), "generated-sources", "java-templates");
 
     @InjectMocks
     private AbstractFilterSourcesMojo mojo = new FilterSourcesMojo();
 
     @BeforeEach
     void before() {
-        File target = resolve( project.getBasedir(), outputDirectory.getPath() );
-        FileUtils.deleteQuietly( target );
+        File target = resolve(project.getBasedir(), outputDirectory.getPath());
+        FileUtils.deleteQuietly(target);
     }
 
     @Test
-    void testGetOutputDirectory()
-    {
+    void testGetOutputDirectory() {
         // when
         File file = mojo.getOutputDirectory();
 
         // then
-        assertThat( file ).isNotNull();
-        assertThat( file.getPath() ).contains( "generated-sources" );
+        assertThat(file).isNotNull();
+        assertThat(file.getPath()).contains("generated-sources");
     }
 
     @Test
-    void testGetSourceDirectory()
-    {
+    void testGetSourceDirectory() {
         // when
         File file = mojo.getSourceDirectory();
 
         // then
-        assertThat( file ).isNotNull();
-        assertThat( file ).exists();
-        assertThat( file ).isDirectory();
-        assertThat( file.getPath() ).contains( "src" );
-        assertThat( file.getPath() ).contains( "main" );
+        assertThat(file).isNotNull();
+        assertThat(file).exists();
+        assertThat(file).isDirectory();
+        assertThat(file.getPath()).contains("src");
+        assertThat(file.getPath()).contains("main");
     }
 
     @Test
-    void testExecute() throws MojoExecutionException, MavenFilteringException
-    {
+    void testExecute() throws MojoExecutionException, MavenFilteringException {
         // given
-        doAnswer( new MockCopyAnswer() ).when( mavenResourcesFiltering ).filterResources( any( MavenResourcesExecution.class ) );
+        doAnswer(new MockCopyAnswer())
+                .when(mavenResourcesFiltering)
+                .filterResources(any(MavenResourcesExecution.class));
 
         // when
         mojo.execute();
-        assertThat( mojo.countCopiedFiles() ).isEqualTo( 1 );
+        assertThat(mojo.countCopiedFiles()).isEqualTo(1);
         mojo.execute();
-        assertThat( mojo.countCopiedFiles() ).isEqualTo( 0 );
+        assertThat(mojo.countCopiedFiles()).isEqualTo(0);
 
         // then
-        verify( mavenResourcesFiltering, times( 2 ) ).filterResources( any( MavenResourcesExecution.class ) );
-        verify( project, times( 2 ) ).addCompileSourceRoot( outputDirectory.getAbsolutePath() );
+        verify(mavenResourcesFiltering, times(2)).filterResources(any(MavenResourcesExecution.class));
+        verify(project, times(2)).addCompileSourceRoot(outputDirectory.getAbsolutePath());
     }
 
-    private static class MockCopyAnswer
-        implements Answer<Void>
-    {
+    private static class MockCopyAnswer implements Answer<Void> {
 
         @Override
-        public Void answer( InvocationOnMock invocation )
-            throws Throwable
-        {
+        public Void answer(InvocationOnMock invocation) throws Throwable {
             MavenResourcesExecution arg = (MavenResourcesExecution) invocation.getArguments()[0];
-            File source = new File( arg.getResources().iterator().next().getDirectory() );
-            assertThat( source ).exists();
-            assertThat( source ).isDirectory();
+            File source = new File(arg.getResources().iterator().next().getDirectory());
+            assertThat(source).exists();
+            assertThat(source).isDirectory();
             File destination = arg.getOutputDirectory();
-            assertThat( destination ).doesNotExist();
-            FileUtils.copyDirectory( source, destination );
+            assertThat(destination).doesNotExist();
+            FileUtils.copyDirectory(source, destination);
             return null;
         }
     }
 
-    private static File resolve( File file, String... paths )
-    {
-        StringBuilder sb = new StringBuilder( file.getPath() );
-        for ( String path : paths )
-        {
-            sb.append( File.separator ).append( path );
+    private static File resolve(File file, String... paths) {
+        StringBuilder sb = new StringBuilder(file.getPath());
+        for (String path : paths) {
+            sb.append(File.separator).append(path);
         }
-        return new File( sb.toString() );
+        return new File(sb.toString());
     }
 }

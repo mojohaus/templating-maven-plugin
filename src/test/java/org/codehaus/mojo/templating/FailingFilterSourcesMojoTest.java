@@ -33,35 +33,30 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 // Let's play with Parameterized, I've been wanted to do that for quite a long time :-).
-public class FailingFilterSourcesMojoTest
-{
+public class FailingFilterSourcesMojoTest {
     public File failingParam;
 
-    public static Collection<File[]> getFailingParameters()
-    {
-        return Arrays.asList( new File[] { null }, new File[] { new File( "/non/existing/path/yodleyyyyeee" ) } );
+    public static Collection<File[]> getFailingParameters() {
+        return Arrays.asList(new File[] {null}, new File[] {new File("/non/existing/path/yodleyyyyeee")});
     }
 
     @MethodSource("getFailingParameters")
     @ParameterizedTest
-    void testBadDirectoryDoesNotAddSourceFolder(File failingParam)
-                                     throws MojoExecutionException {
-        initFailingFilterSourcesMojoTest( failingParam );
-        FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo()
-        {
+    void testBadDirectoryDoesNotAddSourceFolder(File failingParam) throws MojoExecutionException {
+        initFailingFilterSourcesMojoTest(failingParam);
+        FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo() {
             @Override
-            protected void addSourceFolderToProject( MavenProject mavenProject )
-            {
+            protected void addSourceFolderToProject(MavenProject mavenProject) {
                 throw new IllegalArgumentException();
             }
         };
         filterSourcesMojo.sourceDirectory = failingParam;
 
-        MavenResourcesFiltering mock = mock( MavenResourcesFiltering.class );
+        MavenResourcesFiltering mock = mock(MavenResourcesFiltering.class);
         filterSourcesMojo.mavenResourcesFiltering = mock;
 
         filterSourcesMojo.execute();
-        verifyNoInteractions( mock );
+        verifyNoInteractions(mock);
     }
 
     public void initFailingFilterSourcesMojoTest(File failingParam) {
