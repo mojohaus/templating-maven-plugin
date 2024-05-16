@@ -19,8 +19,6 @@ package org.codehaus.mojo.templating;
  * under the License.
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,17 +30,16 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author Krzysztof Suszyński <krzysztof.suszynski@wavesoftware.pl>
  * @since 2015-11-17
  */
-public class MavenProjectStub
-    extends MavenProject
-{
+public class MavenProjectStub extends MavenProject {
     private final File basedir;
 
-    public MavenProjectStub( File basedir )
-    {
+    public MavenProjectStub(File basedir) {
         this.basedir = basedir;
         initiate();
     }
@@ -51,62 +48,55 @@ public class MavenProjectStub
      * {@inheritDoc}
      */
     @Override
-    public File getBasedir()
-    {
+    public File getBasedir() {
         return basedir;
     }
 
-    private void initiate()
-    {
+    private void initiate() {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model;
-        try ( XmlStreamReader in = new XmlStreamReader( new File( getBasedir(), "pom.xml" ) ) )
-        {
+        try (XmlStreamReader in = new XmlStreamReader(new File(getBasedir(), "pom.xml"))) {
             model = pomReader.read(in);
-            setModel( model );
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( e );
+            setModel(model);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
-        setGroupId( model.getGroupId() );
-        setArtifactId( model.getArtifactId() );
-        setVersion( model.getVersion() );
-        setName( model.getName() );
-        setUrl( model.getUrl() );
-        setPackaging( model.getPackaging() );
+        setGroupId(model.getGroupId());
+        setArtifactId(model.getArtifactId());
+        setVersion(model.getVersion());
+        setName(model.getName());
+        setUrl(model.getUrl());
+        setPackaging(model.getPackaging());
 
         Build build = new Build();
-        build.setFinalName( model.getArtifactId() );
-        build.setDirectory( getBasedir() + "/target" );
-        build.setSourceDirectory( getBasedir() + "/src/main/java" );
-        build.setOutputDirectory( getBasedir() + "/target/classes" );
-        build.setTestSourceDirectory( getBasedir() + "/src/test/java" );
-        build.setTestOutputDirectory( getBasedir() + "/target/test-classes" );
-        setBuild( build );
+        build.setFinalName(model.getArtifactId());
+        build.setDirectory(getBasedir() + "/target");
+        build.setSourceDirectory(getBasedir() + "/src/main/java");
+        build.setOutputDirectory(getBasedir() + "/target/classes");
+        build.setTestSourceDirectory(getBasedir() + "/src/test/java");
+        build.setTestOutputDirectory(getBasedir() + "/target/test-classes");
+        setBuild(build);
 
         List<String> compileSourceRoots = new ArrayList<>();
-        compileSourceRoots.add( getBasedir() + "/src/main/java" );
-        setCompileSourceRoots( compileSourceRoots );
+        compileSourceRoots.add(getBasedir() + "/src/main/java");
+        setCompileSourceRoots(compileSourceRoots);
 
         List<String> testCompileSourceRoots = new ArrayList<>();
-        testCompileSourceRoots.add( getBasedir() + "/src/test/java" );
-        setTestCompileSourceRoots( testCompileSourceRoots );
+        testCompileSourceRoots.add(getBasedir() + "/src/test/java");
+        setTestCompileSourceRoots(testCompileSourceRoots);
     }
 
-    public static MavenProject createProjectForITExample( String exampleName )
-    {
+    public static MavenProject createProjectForITExample(String exampleName) {
         String load = exampleName + '/' + "pom.xml";
-        URL pomUrl = MavenProjectStub.class.getClassLoader().getResource( load );
+        URL pomUrl = MavenProjectStub.class.getClassLoader().getResource(load);
         assert pomUrl != null : "Could not load: " + load;
         String pomPath = pomUrl.getPath();
-        File pomFile = new File( pomPath );
-        assertThat( pomFile ).exists().isFile();
+        File pomFile = new File(pomPath);
+        assertThat(pomFile).exists().isFile();
 
         File baseDir = pomFile.getParentFile();
-        assertThat( baseDir ).exists().isDirectory();
-        return new MavenProjectStub( baseDir );
+        assertThat(baseDir).exists().isDirectory();
+        return new MavenProjectStub(baseDir);
     }
-
 }

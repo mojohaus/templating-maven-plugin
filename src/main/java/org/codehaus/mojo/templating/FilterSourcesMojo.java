@@ -30,37 +30,32 @@ import org.apache.maven.project.MavenProject;
  * This mojo helps adding a filtered source folder in one go. This is typically useful if you want to use properties
  * coming from the POM inside parts of your source code that requires real constants, like annotations for example.
  */
-@Mojo( name = "filter-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true )
-public class FilterSourcesMojo
-    extends AbstractFilterSourcesMojo
-{
+@Mojo(name = "filter-sources", defaultPhase = LifecyclePhase.GENERATE_SOURCES, threadSafe = true)
+public class FilterSourcesMojo extends AbstractFilterSourcesMojo {
     /**
      * Source directory that will be first filtered and then added as a classical source folder.
      */
-    @Parameter( defaultValue = "${basedir}/src/main/java-templates" )
+    @Parameter(defaultValue = "${basedir}/src/main/java-templates")
     File sourceDirectory;
 
     /**
      * Output folder where filtered sources will land.
      */
-    @Parameter( defaultValue = "${project.build.directory}/generated-sources/java-templates" )
+    @Parameter(defaultValue = "${project.build.directory}/generated-sources/java-templates")
     private File outputDirectory;
 
     @Override
-    protected File getSourceDirectory()
-    {
+    protected File getSourceDirectory() {
         return sourceDirectory;
     }
 
     @Override
-    protected File getOutputDirectory()
-    {
+    protected File getOutputDirectory() {
         return outputDirectory;
     }
 
     @Override
-    protected void addSourceFolderToProject( MavenProject mavenProject )
-    {
-        mavenProject.addCompileSourceRoot( getOutputDirectory().getAbsolutePath() );
+    protected void addSourceFolderToProject(MavenProject mavenProject) {
+        mavenProject.addCompileSourceRoot(getOutputDirectory().getAbsolutePath());
     }
 }

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements. See the NOTICE file
@@ -18,7 +17,6 @@
   specific language governing permissions and limitations
   under the License.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -33,12 +31,10 @@
 
   <packaging>maven-plugin</packaging>
 
-  <url>https://www.mojohaus.org/templating-maven-plugin</url>
-
   <name>Templating Maven Plugin</name>
-  <description>
-		That project was designed to offer the Maven Right Way® :-) to filter sources.
-	</description>
+  <description>That project was designed to offer the Maven Right Way® :-) to filter sources.</description>
+
+  <url>https://www.mojohaus.org/templating-maven-plugin</url>
   <inceptionYear>2013</inceptionYear>
 
   <licenses>
@@ -52,18 +48,18 @@
   <developers>
     <developer>
       <name>Karl Heinz Marbaise</name>
-      <timezone>+1</timezone>
       <email>khmarbaise@apache.org</email>
       <roles>
         <role>Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
     <developer>
       <name>Baptiste Mathus</name>
-      <timezone>+1</timezone>
       <roles>
         <role>Developer</role>
       </roles>
+      <timezone>+1</timezone>
     </developer>
     <developer>
       <name>Stephen Connolly</name>
@@ -90,8 +86,8 @@
   <scm>
     <connection>scm:git:https://github.com/mojohaus/templating-maven-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojohaus/templating-maven-plugin.git</developerConnection>
-    <url>https://github.com/mojohaus/templating-maven-plugin</url>
     <tag>3.0.0</tag>
+    <url>https://github.com/mojohaus/templating-maven-plugin</url>
   </scm>
 
   <issueManagement>
@@ -107,15 +103,6 @@
     <mavenFilteringVersion>3.3.2</mavenFilteringVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-plugin-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 
   <dependencies>
     <dependency>
@@ -174,6 +161,15 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
   <reporting>
     <plugins>

@@ -19,43 +19,38 @@ package org.codehaus.mojo.templating;
  * under the License.
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.io.File;
 
 import org.apache.maven.project.MavenProject;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-class OkFilterSourcesMojoTest
-{
+class OkFilterSourcesMojoTest {
     @Test
-    void testExistingDirectoryDoesNotAddSourceFolder()
-    {
+    void testExistingDirectoryDoesNotAddSourceFolder() {
         final StringBuilder placeholder = new StringBuilder();
-        FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo()
-        {
+        FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo() {
             @Override
-            protected void addSourceFolderToProject( MavenProject mavenProject )
-            {
-                placeholder.append( "called" );
+            protected void addSourceFolderToProject(MavenProject mavenProject) {
+                placeholder.append("called");
             }
         };
-        filterSourcesMojo.sourceDirectory = new File( "." );
+        filterSourcesMojo.sourceDirectory = new File(".");
 
-        MavenProject mock = mock( MavenProject.class );
-        Mockito.doThrow( IllegalArgumentException.class ).when( mock ).addCompileSourceRoot( anyString() );
-        Mockito.doThrow( IllegalArgumentException.class ).when( mock ).addTestCompileSourceRoot( anyString() );
+        MavenProject mock = mock(MavenProject.class);
+        Mockito.doThrow(IllegalArgumentException.class).when(mock).addCompileSourceRoot(anyString());
+        Mockito.doThrow(IllegalArgumentException.class).when(mock).addTestCompileSourceRoot(anyString());
 
-        filterSourcesMojo.addSourceFolderToProject( mock );
-        assertEquals( "called", placeholder.toString() );
-        assertThat( placeholder.toString() ).isEqualTo( "called" );
-        verify( mock, never() ).addTestCompileSourceRoot( anyString() );
+        filterSourcesMojo.addSourceFolderToProject(mock);
+        assertEquals("called", placeholder.toString());
+        assertThat(placeholder.toString()).isEqualTo("called");
+        verify(mock, never()).addTestCompileSourceRoot(anyString());
     }
 }
