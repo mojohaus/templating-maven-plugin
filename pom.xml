@@ -100,7 +100,7 @@
   </ciManagement>
 
   <properties>
-    <mavenFilteringVersion>3.3.2</mavenFilteringVersion>
+    <mavenFilteringVersion>3.4.0</mavenFilteringVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
 
