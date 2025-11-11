@@ -27,6 +27,6 @@ jobs:
       verify-fail-fast: false               # Fail-fast for verify builds
       matrix-exclude: >
         [
-          {"jdk": "8"}
+          {"jdk": "8"},
           {"jdk": "25"} # fails build
         ]
