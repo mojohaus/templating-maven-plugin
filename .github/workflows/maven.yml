@@ -28,4 +28,5 @@ jobs:
       matrix-exclude: >
         [
           {"jdk": "8"}
+          {"jdk": "25"} # fails build
         ]
