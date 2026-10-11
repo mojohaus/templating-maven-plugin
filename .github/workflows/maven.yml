@@ -25,8 +25,9 @@ jobs:
     uses: apache/maven-gh-actions-shared/.github/workflows/maven-verify.yml@v5
     with:
       verify-fail-fast: false               # Fail-fast for verify builds
+      # JDK 25 fails the build
       matrix-exclude: >
         [
           {"jdk": "8"},
-          {"jdk": "25"} # fails build
+          {"jdk": "25"}
         ]
