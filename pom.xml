@@ -80,7 +80,7 @@
   </contributors>
 
   <prerequisites>
-    <maven>${mavenVersion}</maven>
+    <maven>3.9.0</maven>
   </prerequisites>
 
   <scm>
@@ -100,6 +100,8 @@
   </ciManagement>
 
   <properties>
+    <mavenVersion>3.9.16</mavenVersion>
+    <minimalMavenBuildVersion>3.9.0</minimalMavenBuildVersion>
     <mavenFilteringVersion>3.5.1</mavenFilteringVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
   </properties>
@@ -121,6 +123,13 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-interpolation</artifactId>
       <version>1.30.0</version>
+    </dependency>
+    <dependency>
+      <!-- maven-core 3.9 no longer brings it; the tests need it at runtime -->
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.18.0</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
