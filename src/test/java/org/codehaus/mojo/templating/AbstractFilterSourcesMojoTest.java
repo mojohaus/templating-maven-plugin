@@ -23,9 +23,7 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.MavenSession;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +73,7 @@ class AbstractFilterSourcesMojoTest {
     }
 
     @Test
-    void testGetOutputDirectory() {
+    void getOutputDirectory() {
         // when
         File file = mojo.getOutputDirectory();
 
@@ -85,7 +83,7 @@ class AbstractFilterSourcesMojoTest {
     }
 
     @Test
-    void testGetSourceDirectory() {
+    void getSourceDirectory() {
         // when
         File file = mojo.getSourceDirectory();
 
@@ -98,7 +96,7 @@ class AbstractFilterSourcesMojoTest {
     }
 
     @Test
-    void testExecute() throws MojoExecutionException, MavenFilteringException {
+    void execute() throws Exception {
         // given
         doAnswer(new MockCopyAnswer())
                 .when(mavenResourcesFiltering)

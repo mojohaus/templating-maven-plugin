@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 
 class OkFilterSourcesMojoTest {
     @Test
-    void testExistingDirectoryDoesNotAddSourceFolder() {
+    void existingDirectoryDoesNotAddSourceFolder() {
         final StringBuilder placeholder = new StringBuilder();
         FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo() {
             @Override
