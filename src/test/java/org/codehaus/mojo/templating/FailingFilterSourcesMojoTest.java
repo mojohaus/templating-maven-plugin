@@ -23,7 +23,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +41,7 @@ public class FailingFilterSourcesMojoTest {
 
     @MethodSource("getFailingParameters")
     @ParameterizedTest
-    void testBadDirectoryDoesNotAddSourceFolder(File failingParam) throws MojoExecutionException {
+    void badDirectoryDoesNotAddSourceFolder(File failingParam) throws Exception {
         initFailingFilterSourcesMojoTest(failingParam);
         FilterSourcesMojo filterSourcesMojo = new FilterSourcesMojo() {
             @Override
