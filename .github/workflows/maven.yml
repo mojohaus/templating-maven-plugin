@@ -31,9 +31,3 @@ jobs:
       ff-jdk-distribution: 'temurin'
       maven4-enabled: true
       verify-fail-fast: false               # Fail-fast for verify builds
-      # JDK 25 fails the build
-      matrix-exclude: >
-        [
-          {"jdk": "8"},
-          {"jdk": "25"}
-        ]

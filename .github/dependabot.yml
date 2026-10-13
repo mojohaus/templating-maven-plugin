@@ -14,6 +14,9 @@ updates:
       versions: [">= 3.10.0"]
     - dependency-name: "org.apache.maven:maven-plugin-api"
       versions: [">= 3.10.0"]
+    # Mockito 5 requires Java 11; the build still runs on JDK 8
+    - dependency-name: "org.mockito:*"
+      versions: [">= 5.0.0"]
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
