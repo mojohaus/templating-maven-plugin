@@ -30,4 +30,9 @@ jobs:
       jdk-distribution-matrix: '[ "temurin" ]'
       ff-jdk-distribution: 'temurin'
       maven4-enabled: true
+      # Temurin has no JDK 8 for macOS on Apple silicon
+      matrix-exclude: >
+        [
+          {"os": "macos-latest", "jdk": "8"}
+        ]
       verify-fail-fast: false               # Fail-fast for verify builds
