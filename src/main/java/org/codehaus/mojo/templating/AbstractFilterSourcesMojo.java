@@ -19,6 +19,9 @@ package org.codehaus.mojo.templating;
  * under the License.
  */
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +37,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
@@ -117,7 +119,8 @@ public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
     /**
      * The resources filtering which is used.
      */
-    @Component(hint = "default")
+    @Inject
+    @Named("default")
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
     /** {@inheritDoc} */
