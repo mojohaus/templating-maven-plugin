@@ -100,7 +100,7 @@
   </ciManagement>
 
   <properties>
-    <mavenVersion>3.9.16</mavenVersion>
+    <mavenVersion>3.10.0</mavenVersion>
     <minimalMavenBuildVersion>3.9.0</minimalMavenBuildVersion>
     <mavenFilteringVersion>3.5.1</mavenFilteringVersion>
     <scmpublish.content>target/staging/${project.artifactId}</scmpublish.content>
@@ -182,7 +182,7 @@
       <!-- Mockito 4 brings Byte Buddy 1.12, which cannot instrument classes on recent JDKs -->
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.18.15</version>
+      <version>1.18.16</version>
       <scope>test</scope>
     </dependency>
     <dependency>
