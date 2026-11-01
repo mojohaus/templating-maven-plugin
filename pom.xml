@@ -137,6 +137,13 @@
       <version>4.1.0</version>
     </dependency>
     <dependency>
+      <!-- MavenXpp3Reader throws XmlPullParserException, which plexus-utils 4 moved to plexus-xml -->
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xml</artifactId>
+      <version>3.1.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <!-- maven-core 3.9 no longer brings it; the tests need it at runtime -->
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
