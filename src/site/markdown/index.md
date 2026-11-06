@@ -1,74 +1,64 @@
- ------
- Introduction
- ------
- Baptiste Mathus
- ------
- 2013-01-27
- ------
+title: Introduction
+author: Baptiste Mathus
+date: 2013-01-27
 
-~~ Licensed to the Apache Software Foundation (ASF) under one
-~~ or more contributor license agreements.  See the NOTICE file
-~~ distributed with this work for additional information
-~~ regarding copyright ownership.  The ASF licenses this file
-~~ to you under the Apache License, Version 2.0 (the
-~~ "License"); you may not use this file except in compliance
-~~ with the License.  You may obtain a copy of the License at
-~~
-~~   http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~ Unless required by applicable law or agreed to in writing,
-~~ software distributed under the License is distributed on an
-~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-~~ KIND, either express or implied.  See the License for the
-~~ specific language governing permissions and limitations
-~~ under the License.
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
 
-~~ NOTE: For help with the syntax of this file, see:
-~~ http://maven.apache.org/doxia/references/apt-format.html
+http://www.apache.org/licenses/LICENSE-2.0
 
-Templating Maven Plugin
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
- The templating maven plugin handles copying files from a source to a given output directory, while filtering them.
- This plugin is useful to filter Java Source Code if you need for example to have things in that code 
- replaced with some <properties> values. 
- 
-* Goals Overview
+# Templating Maven Plugin
 
-   * {{{./filter-sources-mojo.html}templating:filter-sources}} lets you filter your sources in one go.
+The templating maven plugin handles copying files from a source to a given output directory, while filtering them.
+This plugin is useful to filter Java Source Code if you need for example to have things in that code
+replaced with some *properties* values.
 
-   * {{{./filter-test-sources-mojo.html}templating:filter-test-sources}} lets you filter your test sources in one go.
+## Goals Overview
 
-* Usage
+- [templating:filter-sources](./filter-sources-mojo.html) lets you filter your sources in one go.
+- [templating:filter-test-sources](./filter-test-sources-mojo.html) lets you filter your test sources in one go.
 
-  General instructions on how to use the Templating Plugin can be found on the {{{./usage.html}usage page}}. Some more
-  specific use cases are described in the examples given below. 
+## Usage
 
-  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
-  free to contact the {{{./mail-lists.html}user mailing list}}. The posts to the mailing list are archived and could
-  already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
-  the {{{./mail-lists.html}mail archive}}.
+General instructions on how to use the Templating Plugin can be found on the [usage page](./usage.html). Some more
+specific use cases are described in the examples given below.
 
-  If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our
-  {{{./issue-tracking.html}issue tracker}}. When creating a new issue, please provide a comprehensive description of your
-  concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
-  entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
-  Of course, patches are welcome, too. Contributors can check out the project from our
-  {{{./source-repository.html}source repository}} and will find supplementary information in the
-  {{{http://maven.apache.org/guides/development/guide-helping.html}guide to helping with Maven}}.
+In case you still have questions regarding the plugin's usage, please have a look at the [FAQ](./faq.html) and feel
+free to contact the [user mailing list](./mail-lists.html). The posts to the mailing list are archived and could
+already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
+the [mail archive](./mail-lists.html).
 
-* Examples
+If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in our
+[issue tracker](./issue-tracking.html). When creating a new issue, please provide a comprehensive description of your
+concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
+entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
+Of course, patches are welcome, too. Contributors can check out the project from our
+[source repository](./source-repository.html) and will find supplementary information in the
+[guide to helping with Maven](http://maven.apache.org/guides/development/guide-helping.html).
 
-   The following examples show how to use the Templating Plugin in more advanced
-   usecases:
+## Examples
 
-   * {{{./examples/source-filtering.html}How to typically configure the filtering}}
+The following examples show how to use the Templating Plugin in more advanced
+usecases:
 
-   * {{{./examples/encoding.html}Specifying a character encoding scheme}}
+- [How to typically configure the filtering](./examples/source-filtering.html)
+- [Specifying a character encoding scheme](./examples/encoding.html)
 
-* Technical details
+## Technical details
 
-   Currently, it uses the  {{{http://maven.apache.org/shared/maven-filtering/}Maven Filtering}}
-   shared component for filtering resources.
-   
-   []
-   
+Currently, it uses the [Maven Filtering](http://maven.apache.org/shared/maven-filtering/)
+shared component for filtering resources.
