@@ -20,6 +20,7 @@ package org.codehaus.mojo.templating;
  */
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.MavenSession;
@@ -29,6 +30,7 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -111,6 +113,44 @@ class AbstractFilterSourcesMojoTest {
         // then
         verify(mavenResourcesFiltering, times(2)).filterResources(any(MavenResourcesExecution.class));
         verify(project, times(2)).addCompileSourceRoot(outputDirectory.getAbsolutePath());
+    }
+
+    @Test
+    void passesConfiguredFiltersAndBuildFilterChoice() throws Exception {
+        // given
+        mojo.filters = Arrays.asList("src/filters/a.properties", "src/filters/b.properties");
+        mojo.useBuildFilters = false;
+        ArgumentCaptor<MavenResourcesExecution> execution = ArgumentCaptor.forClass(MavenResourcesExecution.class);
+        doAnswer(new MockCopyAnswer())
+                .when(mavenResourcesFiltering)
+                .filterResources(any(MavenResourcesExecution.class));
+
+        // when
+        mojo.execute();
+
+        // then
+        verify(mavenResourcesFiltering).filterResources(execution.capture());
+        assertThat(execution.getValue().getFileFilters())
+                .containsExactly("src/filters/a.properties", "src/filters/b.properties");
+        assertThat(execution.getValue().isInjectProjectBuildFilters()).isFalse();
+    }
+
+    @Test
+    void usesBuildFiltersAndNoOwnFiltersByDefault() throws Exception {
+        // given
+        mojo.useBuildFilters = true;
+        ArgumentCaptor<MavenResourcesExecution> execution = ArgumentCaptor.forClass(MavenResourcesExecution.class);
+        doAnswer(new MockCopyAnswer())
+                .when(mavenResourcesFiltering)
+                .filterResources(any(MavenResourcesExecution.class));
+
+        // when
+        mojo.execute();
+
+        // then
+        verify(mavenResourcesFiltering).filterResources(execution.capture());
+        assertThat(execution.getValue().getFileFilters()).isEmpty();
+        assertThat(execution.getValue().isInjectProjectBuildFilters()).isTrue();
     }
 
     private static class MockCopyAnswer implements Answer<Void> {
