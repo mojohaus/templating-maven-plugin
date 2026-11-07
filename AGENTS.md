@@ -34,9 +34,11 @@ what the code and the POMs do not make obvious.
 
 - They live in `src/it`, one directory per test, and run with maven-invoker-plugin. The `run-its`
   profile is active unless `-DskipTests=true` is set, so a plain `mvn verify` runs all of them. The
-  plugin is installed into your local repository first, and the forked builds use that same
-  repository, which CI caches. Do not give the ITs a separate `localRepositoryPath`: CI would download
-  their plugins from Central again in every matrix job.
+  forked builds use a split repository at `.its` inside your local repository: what they download
+  goes to `.its/cached` and stays there, so CI keeps it in its cache, and what they install, the
+  plugin included, goes to `.its/installed/templating-maven-plugin`, which is emptied before every
+  run. `src/it/settings.xml` adds your local repository as a remote, so they also read what the main
+  build resolved.
 - Run a subset:
 
   ```shell

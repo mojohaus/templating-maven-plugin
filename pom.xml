@@ -237,23 +237,67 @@
           <value>!true</value>
         </property>
       </activation>
+      <properties>
+        <its.repository>${settings.localRepository}/.its</its.repository>
+      </properties>
       <build>
         <plugins>
+          <plugin>
+            <!-- IT installs are not kept between runs: empty their part of the IT repository first -->
+            <artifactId>maven-clean-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>clean-it-installs</id>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                  <filesets>
+                    <fileset>
+                      <directory>${its.repository}/installed/${project.artifactId}</directory>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <artifactId>maven-invoker-plugin</artifactId>
             <configuration>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
               <cloneClean>true</cloneClean>
               <postBuildHookScript>verify</postBuildHookScript>
-              <!-- no localRepositoryPath: the ITs share the local repository that CI caches -->
+              <settingsFile>src/it/settings.xml</settingsFile>
             </configuration>
             <executions>
               <execution>
                 <id>integration-test</id>
                 <goals>
                   <goal>install</goal>
+                </goals>
+                <configuration>
+                  <!-- the installed part of the split IT repository -->
+                  <localRepositoryPath>${its.repository}/installed/${project.artifactId}</localRepositoryPath>
+                </configuration>
+              </execution>
+              <execution>
+                <id>run-its</id>
+                <goals>
                   <goal>run</goal>
                 </goals>
+                <configuration>
+                  <!--
+                    A split repository inside the cached local repository: downloads go to cached/ and
+                    survive in the CI cache, installs go to installed/<artifactId> and are emptied above.
+                  -->
+                  <localRepositoryPath>${its.repository}</localRepositoryPath>
+                  <properties>
+                    <aether.enhancedLocalRepository.split>true</aether.enhancedLocalRepository.split>
+                    <aether.enhancedLocalRepository.localPrefix>installed/${project.artifactId}</aether.enhancedLocalRepository.localPrefix>
+                  </properties>
+                </configuration>
               </execution>
             </executions>
           </plugin>
