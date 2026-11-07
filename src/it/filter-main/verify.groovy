@@ -16,9 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- File buildLog = new File(basedir, 'build.log')
-assert buildLog.exists()
-assert buildLog.text.contains("BUILD SUCCESS")
 
-assert new File(basedir, 'target').exists();
-assert new File(basedir, 'target/generated-sources/java-templates').exists();
+def generated = new File(basedir, 'target/generated-sources/java-templates/pkg/SomeClass.java')
+assert generated.isFile() : "the template was not copied to the generated sources"
+assert generated.getText('UTF-8').contains('VERSION = "<1.0-specialversion>"') : generated.getText('UTF-8')
+
+// the generated directory is a source root: the template and the class using it both compiled
+assert new File(basedir, 'target/classes/pkg/SomeClass.class').isFile()
+assert new File(basedir, 'target/classes/pkg/some/SomeOtherClass.class').isFile()
+assert new File(basedir, 'target/classes/net/batmat/maven/App.class').isFile()
+
+return true
