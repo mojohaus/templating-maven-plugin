@@ -29,17 +29,21 @@ what the code and the POMs do not make obvious.
 - JUnit 5 with Mockito (`MockitoExtension`) and AssertJ. `MavenProjectStub.createProjectForITExample`
   builds a project from a POM under `src/test/resources`, such as `sample-simple`; the mojo is
   wired with `@InjectMocks` and a mocked `MavenResourcesFiltering`, so no Maven build runs.
+- `FilteringTest` runs the goals with the real maven-filtering on the projects `build-filters`,
+  `filter-annotations` and `plugin-filters` and checks the generated sources. Test what ends up in a
+  filtered template there, not in an integration test.
 
 ## Integration tests
 
-- They live in `src/it`, one directory per test, and run with maven-invoker-plugin. The `run-its`
+- They live in `src/it`, one directory per test, and run with maven-invoker-plugin. They cover what
+  needs a real build: that the generated directories become source roots and compile. The `run-its`
   profile is active unless `-DskipTests=true` is set, so a plain `mvn verify` runs all of them. The
   plugin is installed into `target/local-repo` first, and `src/it/settings.xml` points the forked
   builds at it.
 - Run a subset:
 
   ```shell
-  mvn -B -P run-its verify -Dinvoker.test=MOJO-2014,filter-main
+  mvn -B -P run-its verify -Dinvoker.test=filter-main,filter-tests
   ```
 
   The tests have no `setup-*` projects.
