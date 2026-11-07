@@ -98,6 +98,31 @@ public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
     @Parameter(defaultValue = "true")
     protected boolean useDefaultDelimiters;
 
+    /**
+     * Property files whose values fill the templates, in addition to the files in the POM's
+     * {@code <build><filters>} (see {@link #useBuildFilters}). Relative paths are resolved against the project
+     * base directory.
+     *
+     * <pre>
+     * &lt;filters&gt;
+     *   &lt;filter&gt;src/filters/version.properties&lt;/filter&gt;
+     * &lt;/filters&gt;
+     * </pre>
+     *
+     * @since 3.2.0
+     */
+    @Parameter
+    protected List<String> filters;
+
+    /**
+     * Whether the files in the POM's {@code <build><filters>} also fill the templates. Set it to {@code false} to
+     * use only the {@link #filters} configured on this plugin.
+     *
+     * @since 3.2.0
+     */
+    @Parameter(defaultValue = "true")
+    protected boolean useBuildFilters;
+
     @Parameter(defaultValue = "${session}", required = true, readonly = true)
     private MavenSession session;
 
@@ -196,10 +221,10 @@ public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
                 temporaryDirectory,
                 project,
                 encoding,
-                Collections.emptyList(),
+                filters == null ? Collections.emptyList() : filters,
                 Collections.emptyList(),
                 session);
-        mavenResourcesExecution.setInjectProjectBuildFilters(true);
+        mavenResourcesExecution.setInjectProjectBuildFilters(useBuildFilters);
         mavenResourcesExecution.setEscapeString(escapeString);
         mavenResourcesExecution.setOverwrite(overwrite);
         setDelimitersForExecution(mavenResourcesExecution);

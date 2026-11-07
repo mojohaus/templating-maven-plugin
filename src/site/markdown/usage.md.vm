@@ -61,3 +61,36 @@ Note: if you only want to filter resources files (not source code), you should u
 directory and the associated Maven Resources Plugin.
 
 Moreover, this goal is bound by default to the `generate-test-sources` phase.
+
+Fill templates from property files
+----------------------------------
+
+Values that are awkward to write as POM properties, or that an earlier build step generates, can come from
+property files. List them in the plugin's `filters`; relative paths are resolved against the project base
+directory:
+
+#[[
+```xml
+<plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>templating-maven-plugin</artifactId>
+  <configuration>
+    <filters>
+      <filter>src/filters/version.properties</filter>
+    </filters>
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>filter-sources</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+With `build.number=4711` in that file, `"${build.number}"` in a template becomes `"4711"`.
+]]#
+
+The files in the POM's `<build><filters>` are applied as well, as they are for filtered resources. Set
+`useBuildFilters` to `false` to fill the templates from the plugin's `filters` only.
