@@ -70,6 +70,9 @@ public class MavenProjectStub extends MavenProject {
         setPackaging(model.getPackaging());
 
         Build build = new Build();
+        if (model.getBuild() != null) {
+            build.setFilters(model.getBuild().getFilters());
+        }
         build.setFinalName(model.getArtifactId());
         build.setDirectory(getBasedir() + "/target");
         build.setSourceDirectory(getBasedir() + "/src/main/java");
