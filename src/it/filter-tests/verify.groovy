@@ -16,10 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- File buildLog = new File(basedir, 'build.log')
-assert buildLog.exists()
-assert buildLog.text.contains("BUILD SUCCESS")
 
-assert new File(basedir, 'target').exists();
-assert new File(basedir, 'target/generated-sources/java-templates').exists();
-assert new File(basedir, 'target/generated-test-sources/java-templates').exists();
+def main = new File(basedir, 'target/generated-sources/java-templates/pkg/SomeClass.java')
+assert main.getText('UTF-8').contains('VERSION = "est 1.0-specialtestversion"') : main.getText('UTF-8')
+
+def test = new File(basedir, 'target/generated-test-sources/java-templates/net/batmat/maven/SomeTestClass.java')
+assert test.getText('UTF-8').contains('VERSION = "%1.0-specialtestversion%"') : test.getText('UTF-8')
+
+// the generated test directory is a test source root: the template and the class using it both compiled
+assert new File(basedir, 'target/test-classes/net/batmat/maven/SomeTestClass.class').isFile()
+assert new File(basedir, 'target/test-classes/some/testpkg/TheClass.class').isFile()
+
+return true

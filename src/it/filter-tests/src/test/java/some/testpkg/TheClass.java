@@ -1,14 +1,8 @@
 package some.testpkg;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+// Compiles only if the filtered test template yields a compile-time constant.
 @SuppressWarnings( net.batmat.maven.SomeTestClass.VERSION )
 public class TheClass
 {
-    @Test
-    public void testFoo()
-    {
-        assertEquals( "%1.0-specialtestversion%", net.batmat.maven.SomeTestClass.VERSION );
-    }
+    static final String VERSION = net.batmat.maven.SomeTestClass.VERSION;
 }
