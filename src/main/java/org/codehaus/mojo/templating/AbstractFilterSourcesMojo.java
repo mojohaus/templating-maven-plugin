@@ -50,7 +50,7 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
     private static final int CHECKSUM_BUFFER = 4096;
 
-    private int copied = 0;
+    private int copied;
 
     /**
      * @return The location of the source directory.
