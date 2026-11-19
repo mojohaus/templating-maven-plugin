@@ -3,7 +3,7 @@ Templating Maven Plugin
 
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/mojohaus/templating-maven-plugin.svg?label=License)](http://www.apache.org/licenses/)
 [![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.mojo/templating-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.codehaus.mojo/templating-maven-plugin)
-[![Build Status](https://travis-ci.org/mojohaus/templating-maven-plugin.svg)](https://travis-ci.org/mojohaus/templating-maven-plugin)
+[![GitHub CI](https://github.com/mojohaus/templating-maven-plugin/actions/workflows/maven.yml/badge.svg)](https://github.com/mojohaus/templating-maven-plugin/actions/workflows/maven.yml)
 
 The [Templating Maven Plugin](http://www.mojohaus.org/templating-maven-plugin/)
 handles copying files from a source to a given output directory, while
