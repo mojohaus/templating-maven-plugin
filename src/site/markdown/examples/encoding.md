@@ -1,9 +1,7 @@
----
 title: Specifying a character encoding scheme
 author:
-  - Baptiste Mathus
+- Baptiste Mathus
 date: 2013-01-27
----
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -14,7 +12,7 @@ to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -31,7 +29,8 @@ A character encoding scheme such as `ASCII`, `UTF-8` or `UTF-16` can be chosen t
 used for the reading and writing of files.
 
 For example, if we want to specify that the character encoding scheme be `UTF-8`,
-we would simply have to configure that as in the following example:
+we would simply have to configure that as in the following example. The goals read this property through their
+`encoding` parameter:
 
 ```xml
 <project>
@@ -45,7 +44,13 @@ we would simply have to configure that as in the following example:
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
-        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>filter-sources</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     ...
@@ -53,3 +58,4 @@ we would simply have to configure that as in the following example:
   ...
 </project>
 ```
+

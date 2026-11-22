@@ -20,7 +20,7 @@ what the code and the POMs do not make obvious.
   `mvn spotless:apply` after editing the README or this file.
 - The parent, `mojo-parent`, sets `maven.compiler.release` to 8, so main code must use the Java 8
   API.
-- The plugin compiles against Maven 3.9.16 (`mavenVersion`) and declares a literal
+- The plugin compiles against the latest Maven 3.9.x (`mavenVersion`) and declares a literal
   `<prerequisites><maven>3.9.0</maven>`; keep the two apart, so raising `mavenVersion` does not
   raise the prerequisite.
 
@@ -64,4 +64,20 @@ what the code and the POMs do not make obvious.
   at the push run for a pull request from a same-repository branch.
 - Pull requests are squash-, merge- or rebase-merged. Release Drafter builds the release notes from
   the titles and labels, so the title should describe the change for a user.
+
+## Documentation updates
+
+A change that users or contributors can notice ships with the documentation it affects, in the same
+pull request. A refactor with no visible effect needs none.
+
+- The goal pages are generated from the Javadoc of `FilterSourcesMojo`, `FilterTestSourcesMojo` and
+  `AbstractFilterSourcesMojo`: a new or changed parameter gets a description, its default and an
+  `@since` with the next release version (the Release Drafter draft).
+- `src/site/markdown/index.md` lists the goals and the examples, `usage.md` explains how to bind the
+  goals, fill templates from property files and the other options, `examples/` holds the filtering and
+  encoding examples, and `faq.md` the FAQ. These are plain Markdown, so examples carry no filtered
+  version: the first plugin declaration on `usage.md` uses the `<!-- latest release -->` placeholder
+  and the others leave the version out.
+- `src/site/site.xml` holds the menu; `README.md` holds the requirements and a short usage; update
+  this file when a convention, build gate or fixture changes.
 

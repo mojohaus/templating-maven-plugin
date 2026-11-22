@@ -1,9 +1,7 @@
----
 title: Filtering a source folder
 author:
-  - Baptiste Mathus
+- Baptiste Mathus
 date: 2013-01-27
----
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -14,7 +12,7 @@ to you under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -32,7 +30,7 @@ In one pass, it filters that folder and adds the resulting filtered folder to th
 as a source folder.
 
 If, for example, you have some of your code where you would like to reference properties coming
-from the POM, you want to put those classes inside the `sourceDirectory` tag.
+from the POM, you want to put those classes in the source directory, `src/main/java-templates` by default.
 
 `Please note that filtering the standard src/main/java folder is not supported.`
 
@@ -44,7 +42,6 @@ from the POM, you want to put those classes inside the `sourceDirectory` tag.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
-        <version>${project.version}</version>
         <executions>
           <execution>
             <id>filter-src</id>
@@ -59,7 +56,7 @@ from the POM, you want to put those classes inside the `sourceDirectory` tag.
                 it's better to just not specify them.
               -->
               <sourceDirectory>${basedir}/src/main/java-templates</sourceDirectory>
-              <outputDirectory>#[[${project.build.directory}]]#/generated-sources/java-templates</outputDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources/java-templates</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -69,3 +66,4 @@ from the POM, you want to put those classes inside the `sourceDirectory` tag.
 
 </project>
 ```
+
