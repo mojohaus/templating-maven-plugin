@@ -131,11 +131,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>4.2.0</version>
-    </dependency>
-    <dependency>
       <!-- MavenXpp3Reader throws XmlPullParserException, which plexus-utils 4 moved to plexus-xml -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-xml</artifactId>
