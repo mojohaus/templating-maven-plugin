@@ -27,6 +27,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -42,7 +49,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * The base class for {@link FilterSourcesMojo} and {@link FilterTestSourcesMojo}
@@ -201,10 +207,32 @@ public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
 
     private void cleanupTemporaryDirectory(File temporaryDirectory) throws MojoExecutionException {
         try {
-            FileUtils.forceDelete(temporaryDirectory);
+            deleteRecursively(temporaryDirectory.toPath());
         } catch (IOException ex) {
             throw new MojoExecutionException(ex.getMessage(), ex);
         }
+    }
+
+    private static void deleteRecursively(Path root) throws IOException {
+        if (!Files.exists(root, LinkOption.NOFOLLOW_LINKS)) {
+            return;
+        }
+        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                if (exc != null) {
+                    throw exc;
+                }
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 
     private void filterSourceToTemporaryDir(final File sourceDirectory, final File temporaryDirectory)
@@ -316,7 +344,12 @@ public abstract class AbstractFilterSourcesMojo extends AbstractMojo {
 
                 if (isFileDifferent(file, destination)) {
                     copied++;
-                    FileUtils.copyFileToDirectory(file, destination);
+                    Files.createDirectories(destination.toPath());
+                    Files.copy(
+                            file.toPath(),
+                            destination.toPath().resolve(file.getName()),
+                            StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES);
                 }
             } else if (file.isDirectory()) {
                 if (!destination.exists() && !destination.mkdirs()) {
