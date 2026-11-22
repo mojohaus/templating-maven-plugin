@@ -12,7 +12,7 @@ what the code and the POMs do not make obvious.
   the result as a source root. The defaults are `src/main/java-templates` to
   `target/generated-sources/java-templates`, and `src/test/java-templates` to
   `target/generated-test-sources/java-templates`.
-- The site is built from `src/site` (`apt` pages, `apt/examples` and the FAQ in `fml`).
+- The site is built from `src/site/markdown` (pages, `examples` and the FAQ in `faq.md`).
 
 ## Build gates
 
